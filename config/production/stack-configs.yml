@@ -32,6 +32,7 @@ stacks:
       ALBSubnet2CidrBlock: 10.10.11.0/24
   natgateway:
     stack-name: "Nat-Gateway"
+    region: "us-east-2"
     templatefile: "natgateways.json"
     parameters:
       EnvironmentTag: "Production"
