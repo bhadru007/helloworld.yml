@@ -15,7 +15,6 @@
                         "HealthCheckTimeout",
                         "UnHealthyThreshold",
                         "HealthyThreshold",
-                        "ALBSubnets",
                         "ALBSecurityGroups"
                     ]
                 },
@@ -28,7 +27,6 @@
                         "EC2InstanceType",
                         "EC2AMI",
                         "EC2SecurityGroups",
-                        "EC2Subnets",
                         "EC2KeyPair",
                         "EC2Profile"
                     ]
@@ -129,9 +127,6 @@
                 "HealthyThreshold": {
                     "default": "Healthy Threshold"
                 },
-                "ALBSubnets": {
-                    "default": "ALB Subnets"
-                },
                 "ALBSecurityGroups": {
                     "default": "ALB Security Groups"
                 },
@@ -149,9 +144,6 @@
                 },
                 "EC2SecurityGroups": {
                     "default": "EC2 Security Groups"
-                },
-                "EC2Subnets": {
-                    "default": "EC2 Subnets"
                 },  
                 "EC2KeyPair": {
                     "default": "EC2 Key Pair"
@@ -271,11 +263,6 @@
             "Default": "2",
             "Description": "Enter the healthy threshold"
         },
-        "ALBSubnets": {
-            "Type": "List<AWS::EC2::Subnet::Id>",
-            "Default": "",
-            "Description": "Enter the subnet-id of the ALB availability zone"
-        },
         "VPCCidrBlock" :{
             "Type": "String",
             "Description" : "CIDRBlock of the VPC",
@@ -305,11 +292,6 @@
             "Type": "String",
             "Default": "",
             "Description": "Enter the amazon image you you want to use."
-        },
-        "EC2Subnets": {
-            "Type": "List<AWS::EC2::Subnet::Id>",
-            "Default": "",
-            "Description": "Enter the subnets for your EC2 instance, make sure you enter at least 2 different subnets in different availability zones."
         },
         "EC2KeyPair": {
             "Type": "AWS::EC2::KeyPair::KeyName",
@@ -482,9 +464,10 @@
             "Description": "Please enter the name for your topic"
         },
         "PeerVPCIdCidr" : {
-            "Type": "AWS::EC2::VPC::Id",
-            "Default": "",
-            "Description": "CIDRBlock of peered VPC"
+            "Description" : "Cidr Block of peer VPC",
+            "Type": "String",
+            "AllowedPattern": "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,2})",
+            "ConstraintDescription": "Must be valid CIDR block Ex: 0.0.0.0/0 ."
         },
         "NameTag": {
             "Description": "Name tag of stack resources.",
