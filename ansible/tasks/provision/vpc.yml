@@ -7,14 +7,13 @@
     disable_rollback: True
     template: ../templates/{{vars['stacks']['vpc']['templatefile']}}
     template_parameters:
-      EnvironmentTag: "Test"
-      VPCCidrBlock: "{{vars['stacks']['vpc']['VPCCidrBlock']}}"
-      VPCName: "{{vars['stacks']['vpc']['VPCName']}}"
-      OwnerTag: "{{vars['stacks']['vpc']['OwnerTag']}}"
+      EnvironmentTag: "{{vars['stacks']['vpc']['parameters']['EnvironmentTag']}}"
+      VPCCidrBlock: "{{vars['stacks']['vpc']['parameters']['VPCCidrBlock']}}"
+      VPCName: "{{vars['stacks']['vpc']['parameters']['VPCName']}}"
+      OwnerTag: "{{vars['stacks']['vpc']['parameters']['OwnerTag']}}"
     tags:
       Name: "{{vars['stacks']['vpc']['VPCName']}}Stack"
   register: vpc_stack
 - name: Show Stack Outputs
-  debug: msg="EnvironmentTag = {{vars['stacks']['vpc']['EnvironmentTag']}}
   debug: msg="Stack outputs should be {{vpc_stack.stack_outputs}}"
   debug: msg="This should be the value of the ID {{vpc_stack.stack_outputs['VPC']}}"
