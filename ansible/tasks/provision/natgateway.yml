@@ -5,7 +5,7 @@
     state: present
     region: "{{stacks['natgateway']['region']}}"
     disable_rollback: True
-    template: ../templates/subnets-template.json
+    template: ../templates/{{vars['stacks']['natgateway']['templatefile']}}
     template_parameters:
       EnvironmentTag: "{{stacks['natgateway']['parameters']['EnvironmentTag']}}"
       OwnerTag: "{{stacks['natgateway']['parameters']['OwnerTag']}}"

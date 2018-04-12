@@ -5,7 +5,7 @@
     state: present
     region: "{{vars['stacks']['subnets']['region']}}"
     disable_rollback: True
-    template: ../templates/subnets-template.json
+    template: ../templates/{{vars['stacks']['subnets']['templatefile']}}
     template_parameters:
       EnvironmentTag: "{{vars['stacks']['subnets']['parameters']['EnvironmentTag']}}"
       OwnerTag: "{{vars['stacks']['subnets']['parameters']['OwnerTag']}}"
