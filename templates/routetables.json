@@ -72,49 +72,49 @@
             "Type": "AWS::EC2::SubnetRouteTableAssociation",
             "Properties": {
                 "RouteTableId": {"Ref": "Nat1RouteTable"},
-                "SubnetId": { "Fn::ImportValue" : "Nat1SubnetExport" }
+                "SubnetId": { "Fn::ImportValue" : "Nat-Subnet-AZ-1" }
             }
         },
         "RTAssoc2": {
             "Type": "AWS::EC2::SubnetRouteTableAssociation",
             "Properties": {
                 "RouteTableId": {"Ref": "Nat1RouteTable"},
-                "SubnetId": { "Fn::ImportValue" : "Web1SubnetExport" }
+                "SubnetId": { "Fn::ImportValue" : "Web-Subnet-AZ-1" }
             }
         },
         "RTAssoc3": {
             "Type": "AWS::EC2::SubnetRouteTableAssociation",
             "Properties": {
                 "RouteTableId": {"Ref": "Nat1RouteTable"},
-                "SubnetId": { "Fn::ImportValue" : "UtilSubnetExport" }
+                "SubnetId": { "Fn::ImportValue" : "Util-Subnet-AZ-1" }
             }
         },
         "RTAssoc4": {
             "Type": "AWS::EC2::SubnetRouteTableAssociation",
             "Properties": {
                 "RouteTableId": {"Ref": "Nat1RouteTable"},
-                "SubnetId": { "Fn::ImportValue" : "ALBSubnet1Export" }
+                "SubnetId": { "Fn::ImportValue" : "ALB-Subnet-AZ-1" }
             }
         },
         "RTAssoc5": {
             "Type": "AWS::EC2::SubnetRouteTableAssociation",
             "Properties": {
                 "RouteTableId": {"Ref": "Nat2RouteTable"},
-                "SubnetId": { "Fn::ImportValue" : "Web2SubnetExport" }
+                "SubnetId": { "Fn::ImportValue" : "Web-Subnet-AZ-2" }
             }
         },
         "RTAssoc6": {
             "Type": "AWS::EC2::SubnetRouteTableAssociation",
             "Properties": {
                 "RouteTableId": {"Ref": "Nat2RouteTable"},
-                "SubnetId": { "Fn::ImportValue" : "Nat2SubnetExport" }
+                "SubnetId": { "Fn::ImportValue" : "Nat-Subnet-AZ-2" }
             }
         },
         "RTAssoc7": {
             "Type": "AWS::EC2::SubnetRouteTableAssociation",
             "Properties": {
                 "RouteTableId": {"Ref": "Nat2RouteTable"},
-                "SubnetId": { "Fn::ImportValue" : "ALBSubnet2Export" }
+                "SubnetId": { "Fn::ImportValue" : "ALB-Subnet-AZ-2" }
             }
         },
     },
