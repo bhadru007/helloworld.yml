@@ -38,7 +38,7 @@
                 "VpcId": {"Ref": "InitialVpc"},
                 "PeerVpcId": { "Fn::ImportValue" : "Production-VPC" }
             }
-        }
+        },
         "PeeringRoute" : {
             "Type" : "AWS::EC2::Route",
             "Properties" : {
@@ -75,12 +75,3 @@
         }
     }
 }
-
-"PeeringRoute2" : {
-            "Type" : "AWS::EC2::Route",
-            "Properties" : {
-                "DestinationCidrBlock": { "Ref" : "myPrivateVPCIDCIDRRange" },
-                "RouteTableId" : { "Ref" : "PublicRouteTable" },
-                "VpcPeeringConnectionId" : { "Ref" : "myVPCPeeringConnection" }
-            }
-        },
