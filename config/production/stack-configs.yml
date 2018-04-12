@@ -53,7 +53,7 @@ stacks:
     parameters:
       EnvironmentTag: "Production"
       OwnerTag: "jboynton"
-      InitialVpc: "vpc-6096f008"
+      InitialVpc: "vpc-95b55efc"
       InitialRouteTable: "rtb-75d73c1c"
       DestinationCidrBlock: "10.10.0.0/16"
       ReverseDestinationCidrBlock: "172.31.0.0/16"
