@@ -73,7 +73,6 @@
                     },
                     "Parameters": [
                         "CodeDeployAppName",
-                        "CodeDeployServiceRole",
                         "CodeDeployS3Bucket"
                     ]
                 },
@@ -569,7 +568,8 @@
                             "Sid": ""
                         }
                     ]
-                }
+                },
+                "RoleName" : {"Fn:Join" : ["-", [{"Ref" : "NameTag"}, "Role"]]}
             }
         },
         "InstanceRole":{
