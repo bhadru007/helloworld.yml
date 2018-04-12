@@ -9,7 +9,7 @@
     template_parameters:
       EnvironmentTag: "{{vars['stacks']['helloworld']['parameters']['EnvironmentTag']}}"
       OwnerTag: "{{vars['stacks']['helloworld']['parameters']['OwnerTag']}}"
-      ALBName: "{{vars['stacks']['helloworld']['parameters']['stack-name']}}-ALB"
+      ALBName: "{{vars['stacks']['helloworld']['stack-name']}}-ALB"
       VPCCidrBlock: "{{vars['stacks']['helloworld']['parameters']['VPCCidrBlock']}}" 
       CodeDeployAppName: "{{vars['stacks']['helloworld']['parameters']['CodeDeployAppName']}}"
       CodeDeployS3Bucket: "{{vars['stacks']['helloworld']['parameters']['CodeDeployS3Bucket']}}"
