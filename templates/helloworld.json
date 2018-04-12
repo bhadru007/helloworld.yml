@@ -569,7 +569,7 @@
                         }
                     ]
                 },
-                "RoleName" : {"Fn:Join" : ["-", [{"Ref" : "NameTag"}, "Role"]]}
+                "RoleName" : {"Fn::Join" : ["-", [{"Ref" : "NameTag"}, "Role"]]}
             }
         },
         "InstanceRole":{
