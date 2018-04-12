@@ -1,0 +1,957 @@
+{
+    "Description": "Fanatics HelloWorld Application Stack",
+    "Metadata": {
+        "AWS::CloudFormation::Interface": {
+            "ParameterGroups": [
+                {
+                    "Label": {
+                        "default": "Elastic Load Balancer Parameters"
+                    },
+                    "Parameters": [
+                        "ALBName",
+                        "EC2Port",
+                        "HealthCheckURI",
+                        "HealthCheckInterval",
+                        "HealthCheckTimeout",
+                        "UnHealthyThreshold",
+                        "HealthyThreshold",
+                        "ALBSubnets",
+                        "ALBSecurityGroups"
+                    ]
+                },
+                {
+                    "Label": {
+                        "default": "EC2 Parameters"
+                    },
+                    "Parameters": [
+                        "VPCCidrBlock",
+                        "EC2InstanceType",
+                        "EC2AMI",
+                        "EC2SecurityGroups",
+                        "EC2Subnets",
+                        "EC2KeyPair",
+                        "EC2Profile"
+                    ]
+                },
+                {
+                    "Label": {
+                        "default": "Auto Scaling Parameters"
+                    },
+                    "Parameters": [
+                        "ASDesiredEC2",
+                        "ASMinEC2",
+                        "ASMaxEC2",
+                        "ASHealthCheckGracePeriod"
+                    ]
+                },
+                {
+                    "Label": {
+                        "default": "CloudWatch Alarm Parameters"
+                    },
+                    "Parameters": [
+                        "AlarmCPUHighThreshold",
+                        "AlarmCPUHighEvaluationPeriods",
+                        "AlarmCPUHighPeriods",
+                        "AlarmDiskUtilHighThreshold",
+                        "AlarmDiskUtilHighEvaluationPeriods",
+                        "AlarmDiskUtilHighPeriods",
+                        "AlarmMemoryUtilHighThreshold",
+                        "AlarmMemoryUtilHighEvaluationPeriods",
+                        "AlarmMemoryUtilHighPeriods",
+                        "AlarmMemoryUtilLowThreshold",
+                        "AlarmMemoryUtilLowEvaluationPeriods",
+                        "AlarmMemoryUtilLowPeriods",
+                        "AlarmNetworkOutHighThreshold",
+                        "AlarmNetworkOutHighEvaluationPeriods",
+                        "AlarmNetworkOutHighPeriods",
+                        "AlarmNetworkOutLowThreshold",
+                        "AlarmNetworkOutLowEvaluationPeriods",
+                        "AlarmNetworkOutLowPeriods"
+                    ]
+                },
+                {
+                    "Label": {
+                        "default": "CodeDeploy Parameters"
+                    },
+                    "Parameters": [
+                        "CodeDeployAppName",
+                        "CodeDeployServiceRole",
+                        "CodeDeployS3Bucket"
+                    ]
+                },
+                {
+                    "Label": {
+                        "default": "Topic Parameters"
+                    },
+                    "Parameters": [
+                        "NotificationEmailAddress",
+                        "NotificationTopicName"
+                    ]
+                },
+                {
+                    "Label" : {
+                        "default" : "Misc Parameters"
+                    },
+                    "Parameters" : [
+                        "EnvironmentTag",
+                        "OwnerTag",
+                        "PeerVPCIdCidr",
+                        "NameTag"
+                    ]
+                
+                }
+            ],
+            "ParameterLabels": {
+                "EnvironmentTag":{
+                    "default" : "Environment"
+                },
+                "OwnerTag": {
+                    "default" : "Owner of resources."
+                },
+                "ALBName": {
+                    "default": "ALB Name"
+                },
+                "EC2Port": {
+                    "default": "Instance Port"
+                },
+                "HealthCheckURI": {
+                    "default": "Health Check URI"
+                },
+                "HealthCheckInterval": {
+                    "default": "Health Check Interval"
+                },
+                "HealthCheckTimeout": {
+                    "default": "Health Check Timeout"
+                },
+                "UnHealthyThreshold": {
+                    "default": "UnHealthy Threshold"
+                },
+                "HealthyThreshold": {
+                    "default": "Healthy Threshold"
+                },
+                "ALBSubnets": {
+                    "default": "ALB Subnets"
+                },
+                "ALBSecurityGroups": {
+                    "default": "ALB Security Groups"
+                },
+                "VPCCidrBlock": {
+                    "default": "VPC CIDRBlock"
+                },
+                "EC2InstanceType": {
+                    "default": "Instance Type"
+                },
+                "EC2AMI": {
+                    "default": "Image"
+                },
+                "EC2Profile": {
+                    "default": "Instance Profile"
+                },
+                "EC2SecurityGroups": {
+                    "default": "EC2 Security Groups"
+                },
+                "EC2Subnets": {
+                    "default": "EC2 Subnets"
+                },  
+                "EC2KeyPair": {
+                    "default": "EC2 Key Pair"
+                },
+                "ASDesiredEC2": {
+                    "default": "Desired # Instances"
+                },
+                "ASMinEC2": {
+                    "default": "Min # Instances"
+                },
+                "ASMaxEC2": {
+                    "default": "Max # Instances"
+                },
+                "ASHealthCheckGracePeriod": {
+                    "default": "Health Check Grace Period"
+                },
+                "AlarmCPUHighThreshold": {
+                    "default": "CPU High % to Scale Up"
+                },
+                "AlarmCPUHighEvaluationPeriods": {
+                    "default": "CPU High, scale up after # evaluation periods"
+                },
+                "AlarmCPUHighPeriods": {
+                    "default": "CPU High, scale up periods - seconds"
+                },
+                "AlarmDiskUtilHighThreshold": {
+                    "default": "Disk Utilization High % to scale up"
+                },
+                "AlarmDiskUtilHighEvaluationPeriods": {
+                    "default": "Disk Utilization High, scale up after # evaluation periods"
+                },
+                "AlarmDiskUtilHighPeriods": {
+                    "default": "Disk Utilization High, scale up periods - seconds"
+                },
+                "AlarmMemoryUtilHighThreshold": {
+                    "default": "Memory Utilization High % to scale up"
+                },
+                "AlarmMemoryUtilHighEvaluationPeriods": {
+                    "default": "Memory Utilization High, scale up after # evaluation periods"
+                },
+                "AlarmMemoryUtilHighPeriods": {
+                    "default": "Memory Utilization High, scale up periods - seconds"
+                },
+                "AlarmMemoryUtilLowThreshold": {
+                    "default": "Memory Utilization Low %"
+                },
+                "AlarmMemoryUtilLowEvaluationPeriods": {
+                    "default": "Memory Utilization Low, # evaluation periods"
+                },
+                "AlarmMemoryUtilLowPeriods": {
+                    "default": "Memory Utilization Low, periods - seconds"
+                },
+                "AlarmNetworkOutHighThreshold": {
+                    "default": "NetworkOut High % to scale up"
+                },
+                "AlarmNetworkOutHighEvaluationPeriods": {
+                    "default": "NetworkOut High, scale up after # evaluation periods"
+                },
+                "AlarmNetworkOutHighPeriods": {
+                    "default": "NetworkOut High, scale up periods - seconds"
+                },
+                "AlarmNetworkOutLowThreshold": {
+                    "default": "NetworkOut Low % to scale down and send notification"
+                },
+                "AlarmNetworkOutLowEvaluationPeriods": {
+                    "default": "NetworkOut Low, scale down and send notification after # evaluation periods"
+                },
+                "AlarmNetworkOutLowPeriods": {
+                    "default": "NetworkOut Low, scale down and send periods - seconds"
+                },
+                "PeerVPCIdCidr":{
+                    "default" : "CIDR of Peered VPC"
+                },
+                "NameTag":{
+                    "default": "Name of the stack"
+                }
+            }
+        }
+    },
+    "Parameters": {
+        "EnvironmentTag": {
+            "Description": "Environment",
+            "Type": "String"
+        },
+        "ALBName": {
+            "Type": "String",
+            "Default": "",
+            "Description": "Enter the name for your Application Load Balancer"
+        },
+        "EC2Port": {
+            "Type": "Number",
+            "Default": "5000",
+            "Description": "Enter the instance port"
+        },
+        "HealthCheckURI": {
+            "Type": "String",
+            "Default": "/",
+            "Description": "Enter the health check URI"
+        },
+        "HealthCheckInterval": {
+            "Type": "Number",
+            "Default": "31",
+            "Description": "Enter the health check interval in seconds (must be greater than the timeout value)"
+        },
+        "HealthCheckTimeout": {
+            "Type": "Number",
+            "Default": "30",
+            "Description": "Enter the health check timeout"
+        },
+        "UnHealthyThreshold": {
+            "Type": "Number",
+            "Default": "3",
+            "Description": "Enter the unhealthy threshold"
+        },
+        "HealthyThreshold": {
+            "Type": "Number",
+            "Default": "2",
+            "Description": "Enter the healthy threshold"
+        },
+        "ALBSubnets": {
+            "Type": "List<AWS::EC2::Subnet::Id>",
+            "Default": "",
+            "Description": "Enter the subnet-id of the ALB availability zone"
+        },
+        "VPCCidrBlock" :{
+            "Type": "String",
+            "Description" : "CIDRBlock of the VPC",
+            "Default" : ""
+        },
+        "EC2InstanceType": {
+            "Type": "String",
+            "Default": "t2.micro",
+            "AllowedValues": [
+                "t2.micro",
+                "t2.small",
+                "t2.medium"
+            ],
+            "Description": "Please select the instance type"
+        },
+        "CodeDeployAppName": {
+            "Type": "String",
+            "Default": "",
+            "Description": "Enter the CodeDeploy Application Name"
+        },
+        "CodeDeployS3Bucket": {
+            "Type": "String",
+            "Default": "",
+            "Description" : "Enter CodeDeployBucket where code deploy will store deployment packages."
+        },
+        "EC2AMI": {
+            "Type": "String",
+            "Default": "",
+            "Description": "Enter the amazon image you you want to use."
+        },
+        "EC2Subnets": {
+            "Type": "List<AWS::EC2::Subnet::Id>",
+            "Default": "",
+            "Description": "Enter the subnets for your EC2 instance, make sure you enter at least 2 different subnets in different availability zones."
+        },
+        "EC2KeyPair": {
+            "Type": "AWS::EC2::KeyPair::KeyName",
+            "Default": "",
+            "Description": "Enter the keyName for your EC2 instances."
+        },
+        "ASDesiredEC2": {
+            "Type": "Number",
+            "Default": "2",
+            "MinValue": "1",
+            "MaxValue": "5",
+            "Description": "Enter the desired number of EC2 instances."
+        },
+        "ASMinEC2": {
+            "Type": "Number",
+            "Default": "2",
+            "MinValue": "2",
+            "MaxValue": "5",
+            "Description": "Enter the min number of EC2 instances."
+        },
+        "ASMaxEC2": {
+            "Type": "Number",
+            "Default": "4",
+            "MinValue": "2",
+            "MaxValue": "5",
+            "Description": "Enter the max number of EC2 instances."
+        },
+        "ASHealthCheckGracePeriod": {
+            "Type": "Number",
+            "Default": "350",
+            "MinValue": "120",
+            "MaxValue": "600",
+            "Description": "Enter the AutoScaling group health check grace period in seconds."
+        },
+        "AlarmCPUHighThreshold": {
+            "Type": "Number",
+            "Default": "50",
+            "MinValue": "1",
+            "MaxValue": "100",
+            "Description": "CPU Utilization high - threshold (%), will scale up and send a notification"
+        },
+        "AlarmCPUHighEvaluationPeriods": {
+            "Type": "Number",
+            "Default": "1",
+            "MinValue": "1",
+            "MaxValue": "5",
+            "Description": "CPU Utilization high - evaluation periods"
+        },
+        "AlarmCPUHighPeriods": {
+            "Type": "Number",
+            "Default": "300",
+            "MinValue": "60",
+            "MaxValue": "3600",
+            "Description": "CPU Utilization high - periods (seconds)"
+        },
+        "AlarmDiskUtilHighThreshold": {
+            "Type": "Number",
+            "Default": "80",
+            "MinValue": "40",
+            "MaxValue": "99",
+            "Description": "Diks space utilization high - threshold (%), will scale up and send a notification"
+        },
+        "AlarmDiskUtilHighEvaluationPeriods": {
+            "Type": "Number",
+            "Default": "1",
+            "MinValue": "1",
+            "MaxValue": "5",
+            "Description": "Diks space utilization high - evaluation periods"
+        },  
+        "AlarmDiskUtilHighPeriods": {
+            "Type": "Number",
+            "Default": "300",
+            "MinValue": "60",
+            "MaxValue": "3600",
+            "Description": "Diks space utilization high - periods (seconds)"
+        },
+        "AlarmMemoryUtilHighThreshold": {
+            "Type": "Number",
+            "Default": "90",
+            "MinValue": "5",
+            "MaxValue": "100",
+            "Description": "Memory utilization high - threshold (%), will scale up and send a notification"
+        },
+        "AlarmMemoryUtilHighEvaluationPeriods": {
+            "Type": "Number",
+            "Default": "2",
+            "MinValue": "1",
+            "MaxValue": "5",
+            "Description": "Memory utilization high - evaluation periods"
+        },
+        "AlarmMemoryUtilHighPeriods": {
+            "Type": "Number",
+            "Default": "300",
+            "MinValue": "300",
+            "MaxValue": "3600",
+            "Description": "Memory utilization high - periods (seconds)"
+        },
+        "AlarmMemoryUtilLowThreshold": {
+            "Type": "Number",
+            "Default": "5",
+            "MinValue": "5",
+            "MaxValue": "100",
+            "Description": "Memory utilization low - threshold (%), will scale up and send a notification"
+        },
+        "AlarmMemoryUtilLowEvaluationPeriods": {
+            "Type": "Number",
+            "Default": "2",
+            "MinValue": "1",
+            "MaxValue": "5",
+            "Description": "Memory utilization low - evaluation periods"
+        },
+        "AlarmMemoryUtilLowPeriods": {
+            "Type": "Number",
+            "Default": "300",
+            "MinValue": "300",
+            "MaxValue": "3600",
+            "Description": "Memory utilization low - periods (seconds)"
+        },
+        "AlarmNetworkOutHighThreshold": {
+            "Type": "Number",
+            "Default": "600000",
+            "Description": "NetworkOut high - threshold (bytes), will scale up and send a notification"
+        },
+        "AlarmNetworkOutHighEvaluationPeriods": {
+            "Type": "Number",
+            "Default": "2",
+            "MinValue": "1",
+            "MaxValue": "5",
+            "Description": "NetworkOut high - evaluation periods"
+        },
+        "AlarmNetworkOutHighPeriods": {
+            "Type": "Number",
+            "Default": "300",
+            "MinValue": "300",
+            "MaxValue": "3600",
+            "Description": "NetworkOut high - periods (seconds)"
+        },
+        "AlarmNetworkOutLowThreshold": {
+            "Type": "Number",
+            "Default": "100000",
+            "Description": "NetworkOut low - threshold (bytes), will scale down and send a notification"
+        },
+        "AlarmNetworkOutLowEvaluationPeriods": {
+            "Type": "Number",
+            "Default": "2",
+            "MinValue": "1",
+            "MaxValue": "5",
+            "Description": "NetworkOut low - evaluation periods"
+        },
+        "AlarmNetworkOutLowPeriods": {
+            "Type": "Number",
+            "Default": "300",
+            "MinValue": "300",
+            "MaxValue": "3600",
+            "Description": "NetworkOut low - periods (seconds)"
+        },
+        "OwnerTag": {
+            "Type": "String",
+            "Default": "",
+            "Description": "Please enter the owner username for this stack"
+        },
+        "NotificationEmailAddress": {
+            "Type": "String",
+            "Default": "",
+            "Description": "Please enter the email address to get notify of the stack activity"
+        },
+        "NotificationTopicName": {
+            "Type": "String",
+            "Default": "",
+            "Description": "Please enter the name for your topic"
+        },
+        "PeerVPCIdCidr" : {
+            "Type": "AWS::EC2::VPC::Id",
+            "Default": "",
+            "Description": "CIDRBlock of peered VPC"
+        },
+        "NameTag": {
+            "Description": "Name tag of stack resources.",
+            "Type" : "String"
+        }
+    },
+    "Resources": {
+        "CodeDeployBucket":{
+            "Type" : "AWS::S3::Bucket",
+            "Properties":{
+                "BucketName" : {"Ref" : "CodeDeployS3Bucket"}
+            }
+        },
+        "ApplicationSG": {
+            "Type": "AWS::EC2::SecurityGroup",
+            "Properties": {
+                "GroupDescription": "Application_SG",
+                "VpcId": { "Fn::ImportValue" : "Production-VPC" },
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": "Application_SG"
+                    },
+                    {
+                        "Key": "Owner",
+                        "Value": {"Ref": "OwnerTag"}
+                    }
+                ]
+            }
+        },
+        "ALBSG" :{
+            "Type": "AWS::EC2::SecurityGroup",
+            "Properties": {
+                "GroupDescription": "ALBSG",
+                "VpcId": { "Fn::ImportValue" : "Production-VPC" },
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": "ALBSG"
+                    },
+                    {
+                        "Key": "Owner",
+                        "Value": {"Ref": "OwnerTag"}
+                    }
+                ]
+            }
+        },
+        "AppIngress1": {
+            "Type": "AWS::EC2::SecurityGroupIngress",
+            "Properties": {
+                "GroupId": {"Ref": "ApplicationSG"},
+                "IpProtocol": "tcp",
+                "FromPort": "5000",
+                "ToPort": "5000",
+                "CidrIp": { "Ref": "VPCCidrBlock"}
+            }
+        },
+        "AppIngress2": {
+            "Type": "AWS::EC2::SecurityGroupIngress",
+            "Properties": {
+                "GroupId": {"Ref": "ApplicationSG"},
+                "IpProtocol": "tcp",
+                "FromPort": "22",
+                "ToPort": "22",
+                "CidrIp": {"Ref" : "PeerVPCIdCidr"}
+            }
+        },
+        "AppIngress3": {
+            "Type": "AWS::EC2::SecurityGroupIngress",
+            "Properties": {
+                "GroupId": {"Ref": "ApplicationSG"},
+                "IpProtocol": "tcp",
+                "FromPort": "22",
+                "ToPort": "22",
+                "CidrIp": {"Ref" : "VPCCidrBlock"}
+            }
+        },
+        "ALBIngress1": {
+            "Type": "AWS::EC2::SecurityGroupIngress",
+            "Properties": {
+                "GroupId": {"Ref": "ALBSG"},
+                "IpProtocol": "tcp",
+                "FromPort": "443",
+                "ToPort": "443",
+                "CidrIp" : "0.0.0.0/0"
+            }
+        },
+        "CodeDeployServiceRole" :{
+            "Type":"AWS::IAM::Role",
+            "Properties": {
+                "AssumeRolePolicyDocument":{
+                    "Statement": [
+                        {
+                            "Action": "sts:AssumeRole",
+                            "Principal": {
+                                "Service": "codedeploy.amazonaws.com"
+                            },
+                            "Effect": "Allow",
+                            "Sid": ""
+                        }
+                    ]
+                }
+            }
+        },
+        "InstanceRole":{
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+                "AssumeRolePolicyDocument": {
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Principal": {
+                                "Service": "ec2.amazonaws.com"
+                            },
+                            "Action": ["sts:AssumeRole"]
+                        }
+                    ]
+                },
+                "Path": "/"
+            }
+        },
+        "DeploymentBucketFullAccessPolicy": {
+            "Type": "AWS::IAM::ManagedPolicy",
+            "Properties": {
+                "Description": "DeploymentBucketFullAccessPolicy",
+                "PolicyDocument": {
+                    "Version" : "2012-10-17",
+                    "Statement": [
+                        {
+                            "Action": ["s3:ListAllMyBuckets"],
+                            "Effect": "Allow",
+                            "Resource": "arn:aws:s3:::*"
+                        },
+                        {
+                            "Action": "s3:*",
+                            "Effect": "Allow",
+                            "Resource": [
+                                {"Fn::Join": ["", ["arn:aws:s3:::", {"Ref" : "CodeDeployS3Bucket"}]]},
+                                {"Fn::Join": ["", ["arn:aws:s3:::", {"Ref" : "CodeDeployS3Bucket"}, "/*"]]}
+                            ]
+                        }
+                    ]
+                },
+                "Roles": [
+                    {"Ref": "InstanceRole"}
+                ]
+            }
+        },
+        "CloudWatchLogPolicy": {
+            "Type": "AWS::IAM::ManagedPolicy",
+            "Properties": {
+                "Description": "CloudWatchLogPolicy",
+                "PolicyDocument": {
+                    "Version" : "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Action": [
+                                "logs:CreateLogGroup",
+                                "logs:CreateLogStream",
+                                "logs:DescribeLogStreams",
+                                "logs:PutLogEvents"
+                            ],
+                            "Resource": [
+                                "arn:aws:logs:*:*:*"
+                            ]
+                        }
+                    ]
+                },
+                "Roles": [
+                    {"Ref": "InstanceRole"}                    
+                ]
+            }
+        },
+        "InstanceProfile": {
+            "Type": "AWS::IAM::InstanceProfile",
+            "Properties": {
+                "Path": "/",
+                "Roles": [
+                    {"Ref": "InstanceRole"}
+                ]
+            }
+        },    
+        "APPTargetGroup": {
+            "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
+            "Properties": {
+                "Name": {"Fn::Join": ["-", [{"Ref": "NameTag"}, "TargetGroup"] ]},
+                "HealthCheckIntervalSeconds": {"Ref": "HealthCheckInterval"},
+                "HealthCheckPath": {"Ref": "HealthCheckURI"},
+                "HealthCheckPort": {"Ref": "EC2Port"},
+                "HealthCheckProtocol": "HTTP",
+                "HealthCheckTimeoutSeconds": {"Ref": "HealthCheckTimeout"},
+                "HealthyThresholdCount": {"Ref": "HealthyThreshold"},
+                "Matcher": {"HttpCode": "200"},
+                "Port": 5000,
+                "Protocol": "HTTP",
+                "Tags": [
+                    {
+                        "Key": "Owner",
+                        "Value": {"Ref": "OwnerTag"}
+                    },
+                    {
+                        "Key": "Name",
+                        "Value": "HelloWorldTargetGroup"
+                    }
+                ],
+                "TargetGroupAttributes": [
+                    {
+                        "Key": "deregistration_delay.timeout_seconds",
+                        "Value": "20"
+                    }
+                ],
+                "UnhealthyThresholdCount": {"Ref": "UnHealthyThreshold"},
+                "VpcId": { "Fn::ImportValue" : "Production-VPC" }
+            }
+        },
+        "ALB": {
+            "Type": "AWS::ElasticLoadBalancingV2::LoadBalancer",
+            "DependsOn": "APPTargetGroup",
+            "Properties": {
+                "Scheme": "internet-facing",
+                "Name": {"Ref": "ALBName" },
+                "Subnets": [{ "Fn::ImportValue" : "ALB-Subnet-AZ-1"},{ "Fn::ImportValue" : "ALB-Subnet-AZ-2"} ],
+                "SecurityGroups": [{"Ref": "ALBSG"}],
+                "Tags": [
+                    { "Key": "Owner", "Value": {"Ref": "OwnerTag" }},
+                    { "Key": "Name", "Value": {"Ref": "ALBName" }}
+                ]
+            }
+        },
+        "ALBHTTPSListener": {
+            "Type": "AWS::ElasticLoadBalancingV2::Listener",
+            "Properties": {
+                "DefaultActions": [
+                    { "Type": "forward", "TargetGroupArn": {"Ref": "APPTargetGroup" }}
+                ],
+                "LoadBalancerArn": { "Ref": "ALB" },
+                "Port": "5000",
+                "Protocol": "HTTP"
+            }
+        },
+        "AutoScalingLaunchConfiguration": {
+            "Type" : "AWS::AutoScaling::LaunchConfiguration",
+            "DependsOn": ["ALB"],
+            "Properties" : {
+                "AssociatePublicIpAddress" : false,
+                "IamInstanceProfile" : { "Ref": "InstanceProfile"},
+                "ImageId" : { "Ref":"EC2AMI"},
+                "InstanceMonitoring" : true,
+                "InstanceType" : { "Ref": "EC2InstanceType"},
+                "KeyName" : { "Ref": "EC2KeyPair" },
+                "SecurityGroups" : [{"Ref": "ApplicationSG"}],
+                "UserData" : { "Fn::Base64" : { "Fn::Join": ["\n",[
+                    "#!/bin/bash",
+                    "echo 'opening firewall ports ...........'",
+                    "iptables -I INPUT -p tcp --dport 5000 -m state --state NEW,ESTABLISHED -j ACCEPT -m comment --comment 'Allow access to application'",
+                    "service iptables save",
+                    "systemctl start iptables",
+                    "echo '--------------------------------DONE-----------------------------------------'"
+                ]]}}
+            }
+        },
+        "AutoScalingGroupTopic": {
+            "Type" : "AWS::SNS::Topic",
+            "Properties" : {
+                "DisplayName" : "Application Stack",
+                "Subscription" : [ 
+                    {
+                        "Endpoint": {"Ref": "NotificationEmailAddress"},
+                        "Protocol": "email"
+                    }
+                ],
+                "TopicName" : {"Ref": "NameTag"}
+            }
+        },        
+        "AutoScalingGroup":{
+            "Type" : "AWS::AutoScaling::AutoScalingGroup",
+            "DependsOn": ["ALB", "AutoScalingLaunchConfiguration", "AutoScalingGroupTopic"],
+            "Properties" : {
+                "Cooldown" : 450,
+                "DesiredCapacity" : { "Ref": "ASDesiredEC2"},
+                "HealthCheckGracePeriod" : { "Ref" : "ASHealthCheckGracePeriod"},
+                "HealthCheckType" : "EC2",
+                "LaunchConfigurationName" : { "Ref": "AutoScalingLaunchConfiguration"},
+                "TargetGroupARNs": [ {"Ref" : "APPTargetGroup" }],              
+                "MaxSize" : { "Ref": "ASMaxEC2"},
+                "MinSize" : { "Ref": "ASMinEC2"},
+                "MetricsCollection" : [ 
+                    {
+                        "Granularity": "1Minute"
+                    }
+                ],              
+                "NotificationConfigurations" : [
+                    {
+                        "TopicARN" : { "Ref" : "AutoScalingGroupTopic" },
+                        "NotificationTypes" : [
+                            "autoscaling:EC2_INSTANCE_LAUNCH",
+                            "autoscaling:EC2_INSTANCE_LAUNCH_ERROR",
+                            "autoscaling:EC2_INSTANCE_TERMINATE",
+                            "autoscaling:EC2_INSTANCE_TERMINATE_ERROR"
+                        ]
+                    }
+                ],
+                "Tags" : [
+                    { "Key" : "Owner", "Value" : { "Ref": "OwnerTag"}, "PropagateAtLaunch": true},
+                    { "Key" : "Name", "Value" : { "Ref": "NameTag"}, "PropagateAtLaunch": true}
+                ],
+                "TerminationPolicies" : [ "OldestLaunchConfiguration", "Default" ],
+                "VPCZoneIdentifier" : [{ "Fn::ImportValue" : "ALB-Subnet-AZ-1"},{ "Fn::ImportValue" : "ALB-Subnet-AZ-2"}]
+            }
+        },
+        "ScaleUpPolicy" : {
+            "Type" : "AWS::AutoScaling::ScalingPolicy",
+            "Properties" : {
+                "AdjustmentType" : "ChangeInCapacity",
+                "AutoScalingGroupName" : { "Ref": "AutoScalingGroup"},
+                "Cooldown" : { "Ref": "ASHealthCheckGracePeriod"},
+                "ScalingAdjustment" : "1"
+            }
+        },
+        "ScaleDownPolicy" : {
+            "Type" : "AWS::AutoScaling::ScalingPolicy",
+            "Properties" : {
+                "AdjustmentType" : "ChangeInCapacity",
+                "AutoScalingGroupName" : { "Ref": "AutoScalingGroup"},
+                "ScalingAdjustment" : "-1"
+            }
+        },
+        "CPUHighAlarm": {
+            "Type": "AWS::CloudWatch::Alarm",
+            "Properties": {
+                "EvaluationPeriods": { "Ref": "AlarmCPUHighEvaluationPeriods" },
+                "Statistic": "Average",
+                "Threshold": { "Ref": "AlarmCPUHighThreshold"},
+                "AlarmDescription": "Alarm if CPU too high",
+                "Period": { "Ref": "AlarmCPUHighPeriods"},
+                "AlarmActions": [ { "Ref": "ScaleUpPolicy" }, { "Ref": "AutoScalingGroupTopic"} ],
+                "Namespace": "AWS/EC2",
+                "Dimensions": [ {
+                    "Name": "AutoScalingGroupName",
+                    "Value": { "Ref": "AutoScalingGroup"}
+                } ],
+                "ComparisonOperator": "GreaterThanThreshold",
+                "MetricName": "CPUUtilization"
+            }
+        },  
+        "DiskSpaceUtilizationHighAlarm": {
+            "Type": "AWS::CloudWatch::Alarm",
+            "Properties": {
+                "EvaluationPeriods": { "Ref": "AlarmDiskUtilHighEvaluationPeriods"},
+                "Statistic": "Average",
+                "Threshold": { "Ref": "AlarmDiskUtilHighThreshold"},
+                "AlarmDescription": "Alarm if DiskSpace Utilization is to high, scale up and send a notification",
+                "Period": { "Ref": "AlarmDiskUtilHighPeriods"},
+                "AlarmActions": [ { "Ref": "ScaleUpPolicy" }, { "Ref": "AutoScalingGroupTopic"} ],
+                "Namespace": "System/Linux",
+                "Dimensions": [ 
+                    {
+                        "Name": "AutoScalingGroupName",
+                        "Value": { "Ref": "AutoScalingGroup"}
+                    },          
+                    {
+                        "Name":"Filesystem",
+                        "Value":"/dev/xvda2"
+                    },
+                    {
+                        "Name": "MountPath",
+                        "Value": "/"
+                    }
+                ],
+                "ComparisonOperator": "GreaterThanThreshold",
+                "MetricName": "DiskSpaceUtilization"
+            }
+        },
+        "MemoryUtilizationHighAlarm": {
+            "Type": "AWS::CloudWatch::Alarm",
+            "Properties": {
+                "EvaluationPeriods": { "Ref": "AlarmMemoryUtilHighEvaluationPeriods"},
+                "Statistic": "Average",
+                "Threshold": { "Ref": "AlarmMemoryUtilHighThreshold"},
+                "AlarmDescription": "Alarm if MemoryUtilization too high, scale up and send a notification",
+                "Period": { "Ref": "AlarmMemoryUtilHighPeriods"},
+                "AlarmActions": [ { "Ref": "ScaleUpPolicy" }, { "Ref": "AutoScalingGroupTopic"}],
+                "Namespace": "System/Linux",
+                "Dimensions": [ {
+                    "Name": "AutoScalingGroupName",
+                    "Value": { "Ref": "AutoScalingGroup"}
+                } ],
+                "ComparisonOperator": "GreaterThanThreshold",
+                "MetricName": "MemoryUtilization"
+            }
+        },
+        "MemoryUtilizationLowAlarm": {
+            "Type": "AWS::CloudWatch::Alarm",
+            "Properties": {
+                "EvaluationPeriods": { "Ref": "AlarmMemoryUtilLowEvaluationPeriods"},
+                "Statistic": "Average",
+                "Threshold": { "Ref": "AlarmMemoryUtilLowThreshold"},
+                "AlarmDescription": "Alarm if MemoryUtilization too low, send a notification",
+                "Period": { "Ref": "AlarmMemoryUtilLowPeriods"},
+                "AlarmActions": [ { "Ref": "AutoScalingGroupTopic"}],
+                "Namespace": "System/Linux",
+                "Dimensions": [ {
+                    "Name": "AutoScalingGroupName",
+                    "Value": { "Ref": "AutoScalingGroup"}
+                } ],
+                "ComparisonOperator": "LessThanThreshold",
+                "MetricName": "MemoryUtilization"
+            }
+        },
+        "NetworkOutHighAlarm": {
+            "Type": "AWS::CloudWatch::Alarm",
+            "Properties": {
+                "EvaluationPeriods": { "Ref": "AlarmNetworkOutHighEvaluationPeriods"},
+                "Statistic": "Average",
+                "Threshold": { "Ref": "AlarmNetworkOutHighThreshold"},
+                "AlarmDescription": "Alarm if networkout activity is to high, scale up and send a notification",
+                "Period": { "Ref": "AlarmNetworkOutHighPeriods"},
+                "AlarmActions": [ { "Ref": "ScaleUpPolicy" }, { "Ref": "AutoScalingGroupTopic"}],
+                "Namespace": "AWS/EC2",
+                "Dimensions": [ {
+                    "Name": "AutoScalingGroupName",
+                    "Value": { "Ref": "AutoScalingGroup"}
+                } ],
+                "ComparisonOperator": "GreaterThanThreshold",
+                "MetricName": "NetworkOut"
+            }
+        },
+        "NetworkOutLowAlarm": {
+            "Type": "AWS::CloudWatch::Alarm",
+            "Properties": {
+                "EvaluationPeriods": { "Ref": "AlarmNetworkOutLowEvaluationPeriods"},
+                "Statistic": "Average",
+                "Threshold": { "Ref": "AlarmNetworkOutLowThreshold"},
+                "AlarmDescription": "Alarm if networkout activity is to low, scale down and send a notification",
+                "Period": { "Ref": "AlarmNetworkOutLowPeriods"},
+                "AlarmActions": [ { "Ref": "ScaleDownPolicy" }],
+                "Namespace": "AWS/EC2",
+                "Dimensions": [ {
+                    "Name": "AutoScalingGroupName",
+                    "Value": { "Ref": "AutoScalingGroup"}
+                } ],
+                "ComparisonOperator": "LessThanThreshold",
+                "MetricName": "NetworkOut"
+            }
+        },        
+        "CodeDeployApplication": {
+            "Type": "AWS::CodeDeploy::Application",
+            "Properties": {
+                "ApplicationName": {"Ref": "CodeDeployAppName"}
+            }
+        },
+        "CodeDeployDeploymentGroup": {
+            "DependsOn": "CodeDeployApplication",
+            "Type": "AWS::CodeDeploy::DeploymentGroup",
+            "Properties": {
+                "ApplicationName": {"Ref": "CodeDeployAppName"},
+                "AutoScalingGroups": [
+                    {"Ref": "AutoScalingGroup"}
+                ],
+                "DeploymentGroupName": {"Ref": "CodeDeployAppName"},
+                "DeploymentConfigName": "CodeDeployDefault.OneAtATime",
+                "ServiceRoleArn": {"Ref": "CodeDeployServiceRole"}
+            }
+        }
+    },
+    "Outputs": {
+
+    }
+}

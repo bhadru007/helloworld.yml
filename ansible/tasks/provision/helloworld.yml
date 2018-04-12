@@ -1,0 +1,26 @@
+---
+- name: Create Helloworld App with CF Template
+  cloudformation:
+    stack_name: "{{stacks['helloworld']['stack-name']}}"
+    state: present
+    region: "{{stacks['helloworld']['region']}}"
+    disable_rollback: True
+    template: ../templates/{{vars['stacks']['helloworld']['templatefile']}}
+    template_parameters:
+      EnvironmentTag: "{{stacks['helloworld']['parameters']['EnvironmentTag']}}"
+      OwnerTag: "{{stacks['helloworld']['parameters']['OwnerTag']}}"
+      ALBName: "{{stacks['helloworld']['parameters']['stack-name']}}-ALB"
+      VPCCidrBlock: "{{stacks['helloworld']['parameters']['VPCCidrBlock']}}" 
+      CodeDeployAppName: "{{stacks['helloworld']['parameters']['CodeDeployAppName']}}"
+      CodeDeployS3Bucket: "{{stacks['helloworld']['parameters']['CodeDeployS3Bucket']}}"
+      EC2AMI: "{{stacks['helloworld']['parameters']['EC2AMI']}}"
+      EC2KeyPair: "{{stacks['helloworld']['parameters']['EC2KeyPair']}}"
+      NotificationEmailAddress: "{{stacks['helloworld']['parameters']['NotificationEmailAddress']}}"
+      NotificationTopicName:"{{stacks['helloworld']['parameters']['NotificationTopicName']}}"
+      PeerVPCIdCidr: "{{stacks['helloworld']['parameters']['PeerVPCIdCidr']}}"
+      NameTag: "{{stacks['helloworld']['parameters']['NameTag']}}"
+    tags:
+      Stack: "{{stacks['helloworld']['stack-name']}}"
+  register: helloworld_stack
+- name: Show Stack Outputs
+  debug: msg="Stack outputs should be {{helloworld_stack.stack_outputs}}"
