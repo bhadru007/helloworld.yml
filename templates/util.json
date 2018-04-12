@@ -1,0 +1,183 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "Util Setup",
+    "Metadata": {
+        "AWS::CloudFormation::Interface": {
+            "ParameterGroups": [
+                {
+                    "Label": {
+                        "default": "VPC Parameters"
+                    },
+                    "Parameters": ["VPC"]
+                }, 
+                {
+                    "Label": {
+                        "default": "EC2 Parameters"
+                    },
+                    "Parameters": ["EC2AMI"]
+                }, 
+                {
+                    "Label": {
+                        "default": "Security Parameters"
+                    },
+                    "Parameters": ["SSHKey", "SSHIpAddress"]
+                }, 
+                {   
+                    "Label": {
+                        "default": "Misc Parameters"
+                    },
+                    "Parameters": ["OwnerTag"]
+                }
+            ],
+            "ParameterLabels": {            
+                "VPC": {
+                    "default": "VPC"
+                },
+                "EC2AMI": {
+                    "default": "Image"
+                },
+                "SSHKey": {
+                    "default": "EC2 Key Pair"
+                },
+                "SSHIpAddress":{
+                    "default": "Source SSH IP Address"
+                },
+                "OwnerTag": {
+                    "default": "Resource Owner"
+                }
+            }
+        }
+    },
+    "Parameters":{
+        "VPC": {
+            "Description" : "VPC in which to install.",
+            "Type" : "AWS::EC2::VPC::Id"
+        },
+        "OwnerTag":{
+            "Description" : "Name of the person to contact for each resource.",
+            "Type": "String"
+        },
+        "EC2AMI" : {
+            "Description" : "AMI Id of image to use",
+            "Type": "String"
+        },
+        "SSHKey" :{
+            "Description": "Key pair name used to ssh to util box",
+            "Type": "AWS::EC2::KeyPair::KeyName"
+        },
+        "SSHIpAddress":{
+            "Description" : "IP Address from which you will ssh.",
+            "Type": "String",
+            "AllowedPattern": "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,2})",
+            "ConstraintDescription": "Must be valid CIDR block Ex: 0.0.0.0/0 ."
+        }
+    },
+    "Resources":{
+        "UtilRole": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+                "AssumeRolePolicyDocument": {
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Principal": {
+                                "Service": "ec2.amazonaws.com"
+                            },
+                            "Action": ["sts:AssumeRole"]
+                        }
+                    ]
+                },
+                "Path": "/"
+            }
+        },
+        "UtilPolicy":{
+            "Type" : "AWS::IAM::ManagedPolicy",
+            "Properties":{
+                "Description": "EC2Admin Policy",
+                "PolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Action": "*",
+                            "Resource": "*"
+                        }
+                    ]
+                },
+                "Roles":[{"Ref" : "UtilRole"}]
+            }
+        },
+        "UtilInstanceProfile": {
+            "Type": "AWS::IAM::InstanceProfile",
+            "Properties": {
+                "Path": "/",
+                "Roles": [
+                    {"Ref": "UtilRole"}
+                ]
+            }
+        },    
+        "SecurityGroup":{
+            "Type": "AWS::EC2::SecurityGroup",
+            "Properties": {
+                "GroupDescription": "UtilSG",
+                "VpcId": {"Ref": "VPC"},
+                "Tags":[
+                    {"Key":"Name", "Value": "UtilSG"},
+                    {"Key":"Owner", "Value": {"Ref" : "OwnerTag"}}
+                ]
+            }
+        },
+        "SecurityGroupIngress" :{
+            "Type": "AWS::EC2::SecurityGroupIngress",
+            "Properties": {
+                "GroupId": {"Ref": "SecurityGroup"},
+                "IpProtocol": "tcp",
+                "FromPort": "22",
+                "ToPort": "22",
+                "CidrIp": {"Ref" : "SSHIpAddress"}
+            }
+        },
+        "UtilBox": {
+            "Type": "AWS::EC2::Instance",
+            "Properties": {
+                "AvailabilityZone" : {"Fn::Select" : [ "0", { "Fn::GetAZs" : "" } ]},
+                "ImageId" : {"Ref" : "EC2AMI"},
+                "InstanceType" : "t2.large",
+                "KeyName" : {"Ref" : "SSHKey"},
+                "Tags" : [
+                    {"Key":"Name", "Value": "UtilInstance"},
+                    {"Key":"Owner", "Value": {"Ref" : "OwnerTag"}}
+                ],
+                "NetworkInterfaces": [ {
+                    "AssociatePublicIpAddress": "true",
+                    "DeviceIndex": "0",
+                    "GroupSet": [{"Ref" : "SecurityGroup"}]
+                }],
+                "IamInstanceProfile" : {"Ref" : "UtilInstanceProfile"},
+                "UserData" :{ "Fn::Base64" : { "Fn::Join": ["\n",[
+                    "#!/bin/bash",
+                    "yum -y update",
+                    "yum -y groupinstall development",
+                    "yum -y install python36",
+                    "alternatives --set python /usr/bin/python3.6 ",
+                    "easy_install pip",
+                    "pip install ansible",
+                    "pip install --upgrade pip",
+                    "git init --bare /home/ec2-user/helloworld",
+                    "git init --bare /home/ec2-user/networkcode",
+                    "chown -R ec2-user:ec2-user /home/helloworld",
+                    "chown -R ec2-user:ec2-user /home/networkcode"
+                ]]}}
+            }
+        }
+    },
+    "Outputs":{
+        "EC2Ip" : {
+            "Description" : "PublicIp of UtilBox",
+            "Value" : {"Fn::GetAtt" : ["UtilBox", "PublicIp"]},
+            "Export":{
+                "Name" : "UtilBoxIp"
+            }
+        }
+    }
+}

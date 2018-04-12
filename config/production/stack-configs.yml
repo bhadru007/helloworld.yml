@@ -1,0 +1,36 @@
+stacks:
+  - stack-name: "VPC-Stack"
+    region: "us-east-2"
+    templatefile: "vpc.json"
+    parameters: 
+      - VPCCidrBlock: 10.10.0.0/16
+      - VPCName: "Production-VPC"
+      - OwnerTag: "jboynton"
+      - EnvironmentTag: "Production"
+  - stack-name: "Subnet-Stack"
+    region: "us-east-2"
+    templatefile: "subnets.json"
+    parameters:
+      - EnvironmentTag: "Production"
+      - OwnerTag: "jboynton"
+      - Nat1SubnetName: "Nat-Subnet-AZ-1"
+      - Nat1SubnetCidrBlock: 10.10.1.0/24
+      - Nat2SubnetName: "Nat-Subnet-AZ-2"
+      - Nat2SubnetCidrBlock: 10.10.2.0/24
+      - Web1SubnetName: "Web-Subnet-AZ-1"
+      - Web1SubnetCidrBlock: 10.10.20.0/24
+      - Web2SubnetName: "Web-Subnet-AZ-2"
+      - Web2SubnetCidrBlock: 10.10.21.0/24
+      - Util1SubnetName: "Util-Subnet-AZ-1"
+      - Util1SubnetCidrBlock: 10.10.30.0/24
+      - ALB1SubnetName: "ALB-Subnet-AZ-1"
+      - ALB1SubnetCidrBlock: 10.10.10.0/24
+      - ALB2SubnetName: "Web-Subnet-AZ-2"
+      - ALB2SubnetCidrBlock: 10.10.11.0/24
+  - stack-name: "Nat-Gateway"
+    templatefile: "natgateways.json"
+    parameters:
+      - EnvironmentTag: "Production"
+      - OwnerTag: "jboynton"
+      - NatGateway1Name: "NatGateway1"
+      - NatGateway2Name: "NatGateway2"

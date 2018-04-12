@@ -1,0 +1,11 @@
+---
+- name: Production Network Stack on AWS
+  hosts: localhost
+  connection: local
+  gather_facts: no
+  vars_files:
+    - ../config/{{target_env}}/stack-configs.yml
+  tasks:
+    - include: tasks/provision/vpc.yml
+    - include: tasks/provision/subnet.yml
+    - include: tasks/provision/natgateway.yml

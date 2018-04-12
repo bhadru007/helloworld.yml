@@ -1,0 +1,19 @@
+---
+- name: Create VPC with CF Template
+  cloudformation:
+    stack_name: "{{stacks['stack-name']}}"
+    state: present
+    region: "{{stacks['region']}}"
+    disable_rollback: True
+    template: ../templates/vpc.json
+    template_parameters:
+      EnvironmentTag: "{{stacks['EnvironmentTag']}}"
+      VPCCidrBlock: "{{stacks['VPCCidrBlock']}}"
+      VPCName: "{{stack['VPCName']}}"
+      OwnerTag: "{{stack['OwnerTag']}}"
+    tags:
+      Name: "{{stacks['VPCName']}}Stack"
+  register: vpc_stack
+- name: Show Stack Outputs
+  debug: msg="Stack outputs should be {{vpc_stack.stack_outputs}}"
+  debug: msg="This should be the value of the ID {{vpc_stack.stack_outputs['VPC']}}"

@@ -1,0 +1,292 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "Subnet Creation",
+    "Parameters":{
+        "EnvironmentTag": {
+            "Description": "Environment",
+            "Type": "String"
+        },
+        "OwnerTag": {
+            "Description": "TagOwner",
+            "Type": "String"
+        },
+        "Nat1SubnetName": {
+            "Description": "Nat subnet name tag in AZ 1",
+            "Type": "String"
+        },
+        "Nat1SubnetCidrBlock": {
+            "Description": "CIDRBlock for for Nat 1AZ subnet",
+            "Type": "String",
+            "AllowedPattern": "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,2})",
+            "ConstraintDescription": "Must be valid CIDR block Ex: 0.0.0.0/0 ."
+        },
+        "Nat2SubnetName": {
+            "Description": "Nat subnet name tag in AZ 2",
+            "Type": "String"
+        },
+        "Nat2SubnetCidrBlock": {
+            "Description": "CIDRBlock for for Nat 2AZ subnet",
+            "Type": "String",
+            "AllowedPattern": "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,2})",
+            "ConstraintDescription": "Must be valid CIDR block Ex: 0.0.0.0/0 ."
+        },
+        "Web1SubnetName": {
+            "Description": "Web subnet name tag in AZ 1",
+            "Type": "String"
+        },
+        "Web1SubnetCidrBlock": {
+            "Description": "CIDRBlock for for Web 1AZ subnet",
+            "Type": "String",
+            "AllowedPattern": "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,2})",
+            "ConstraintDescription": "Must be valid CIDR block Ex: 0.0.0.0/0 ."
+        },
+        "Web2SubnetName": {
+            "Description": "Web subnet name tag in AZ 2",
+            "Type": "String"
+        },
+        "Web2SubnetCidrBlock": {
+            "Description": "CIDRBlock for for Web 2AZ subnet",
+            "Type": "String",
+            "AllowedPattern": "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,2})",
+            "ConstraintDescription": "Must be valid CIDR block Ex: 0.0.0.0/0 ."
+        },
+        "Util1SubnetName": {
+            "Description": "Util subnet name tag in AZ 1",
+            "Type": "String"
+        },
+        "Util1SubnetCidrBlock": {
+            "Description": "CIDRBlock for for Util 1AZ subnet",
+            "Type": "String",
+            "AllowedPattern": "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,2})",
+            "ConstraintDescription": "Must be valid CIDR block Ex: 0.0.0.0/0 ."
+        },       
+        "ALBSubnet1Name":{
+            "Description" : "Subnet Name for ALB subnet 1",
+            "Type" : "String"
+        },
+        "ALBSubnet1CidrBlock" : {
+            "Description" : "CIDRBlock for ALB Subnet 1",
+            "Type" : "String",
+            "AllowedPattern": "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,2})",
+            "ConstraintDescription": "Must be valid CIDR block Ex: 0.0.0.0/0 ."
+        },
+        "ALBSubnet2Name":{
+            "Description" : "Subnet 2 Name for ALB subnet",
+            "Type" : "String"
+        },
+        "ALBSubnet2CidrBlock" : {
+            "Description" : "CIDRBlock for ALB Subnet 2",
+            "Type" : "String",
+            "AllowedPattern": "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,2})",
+            "ConstraintDescription": "Must be valid CIDR block Ex: 0.0.0.0/0 ."
+        }
+    },
+    "Resources":{
+        "Nat1Subnet": {
+            "Type": "AWS::EC2::Subnet",
+            "Properties": {
+                "CidrBlock": {"Ref" : "Nat1SubnetCidrBlock"},
+                "AvailabilityZone": {"Fn::Select" : [ "0", { "Fn::GetAZs" : "" } ]},
+                "VpcId": { "Fn::ImportValue" : "Production-VPC" },
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": {"Ref" : "Nat1SubnetName" }
+                    },
+                    {
+                        "Key": "Owner",
+                        "Value": {"Ref": "OwnerTag"}
+                    }, 
+                    {
+                        "Key": "Environment",
+                        "Value": {"Ref": "EnvironmentTag"}
+                    }
+                ]
+            }
+        },
+        "Nat2Subnet": {
+            "Type": "AWS::EC2::Subnet",
+            "Properties": {
+                "CidrBlock": {"Ref" : "Nat2SubnetCidrBlock"},
+                "AvailabilityZone": {"Fn::Select" : [ "0", { "Fn::GetAZs" : "" } ]},
+                "VpcId": { "Fn::ImportValue" : "Production-VPC" },
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": {"Ref" : "Nat2SubnetName" }
+                    },
+                    {
+                        "Key": "Owner",
+                        "Value": {"Ref": "OwnerTag"}
+                    }, 
+                    {
+                        "Key": "Environment",
+                        "Value": {"Ref": "EnvironmentTag"}
+                    }
+                ]
+            }
+        },
+        "Web1Subnet": {
+            "Type": "AWS::EC2::Subnet",
+            "Properties": {
+                "CidrBlock": {"Ref" : "Web1SubnetCidrBlock"},
+                "AvailabilityZone": {"Fn::Select" : [ "0", { "Fn::GetAZs" : "" } ]},
+                "VpcId": { "Fn::ImportValue" : "Production-VPC" },
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": {"Ref" : "Web1SubnetName" }
+                    },
+                    {
+                        "Key": "Owner",
+                        "Value": {"Ref": "OwnerTag"}
+                    }, 
+                    {
+                        "Key": "Environment",
+                        "Value": {"Ref": "EnvironmentTag"}
+                    }
+                ]
+            }
+        },
+        "Web2Subnet": {
+            "Type": "AWS::EC2::Subnet",
+            "Properties": {
+                "CidrBlock": {"Ref" : "Web2SubnetCidrBlock"},
+                "AvailabilityZone": {"Fn::Select" : [ "1", { "Fn::GetAZs" : "" } ]},
+                "VpcId": { "Fn::ImportValue" : "Production-VPC" },
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": {"Ref" : "Web2SubnetName" }
+                    },
+                    {
+                        "Key": "Owner",
+                        "Value": {"Ref": "OwnerTag"}
+                    }, 
+                    {
+                        "Key": "Environment",
+                        "Value": {"Ref": "EnvironmentTag"}
+                    }
+                ]
+            }
+        },
+        "UtilSubnet": {
+            "Type": "AWS::EC2::Subnet",
+            "Properties": {
+                "CidrBlock": {"Ref" : "Util1SubnetCidrBlock"},
+                "AvailabilityZone": {"Fn::Select" : [ "0", { "Fn::GetAZs" : "" } ]},
+                "VpcId": { "Fn::ImportValue" : "Production-VPC" },
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": {"Ref" : "Util1SubnetName" }
+                    },
+                    {
+                        "Key": "Owner",
+                        "Value": {"Ref": "OwnerTag"}
+                    }, 
+                    {
+                        "Key": "Environment",
+                        "Value": {"Ref": "EnvironmentTag"}
+                    }
+                ]
+            }
+        },
+        "ALBSubnet1": {
+            "Type": "AWS::EC2::Subnet",
+            "Properties": {
+                "CidrBlock": {"Ref" : "ALBSubnet1CidrBlock"},
+                "AvailabilityZone": {"Fn::Select" : [ "0", { "Fn::GetAZs" : "" } ]},
+                "VpcId": { "Fn::ImportValue" : "Production-VPC" },
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": {"Ref" : "ALBSubnet1Name" }
+                    },
+                    {
+                        "Key": "Owner",
+                        "Value": {"Ref": "OwnerTag"}
+                    }, 
+                    {
+                        "Key": "Environment",
+                        "Value": {"Ref": "EnvironmentTag"}
+                    }
+                ]
+            }
+        },
+        "ALBSubnet2": {
+            "Type": "AWS::EC2::Subnet",
+            "Properties": {
+                "CidrBlock": {"Ref" : "ALBSubnet2CidrBlock"},
+                "AvailabilityZone": {"Fn::Select" : [ "1", { "Fn::GetAZs" : "" } ]},
+                "VpcId": { "Fn::ImportValue" : "Production-VPC" },
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": {"Ref" : "ALBSubnet2Name" }
+                    },
+                    {
+                        "Key": "Owner",
+                        "Value": {"Ref": "OwnerTag"}
+                    }, 
+                    {
+                        "Key": "Environment",
+                        "Value": {"Ref": "EnvironmentTag"}
+                    }
+                ]
+            }
+        }
+        
+    },
+    "Outputs":{
+        "Nat1SubnetExport":{
+            "Description": "Nat 1 Subnet",
+            "Value" : {"Ref": "Nat1Subnet"},
+            "Export" : {
+                "Name" : {"Ref" : "Nat1SubnetName"}
+            }
+        },
+        "Nat2SubnetExport":{
+            "Description": "Nat 2 Subnet",
+            "Value" : {"Ref": "Nat2Subnet"},
+            "Export" : {
+                "Name" : {"Ref" : "Nat2SubnetName"}
+            }
+        },
+        "Web1SubnetExport":{
+            "Description": "Web 1 Subnet",
+            "Value" : {"Ref": "Web1Subnet"},
+            "Export" : {
+                "Name" : {"Ref" : "Web1SubnetName"}
+            }
+        },
+        "Web2SubnetExport":{
+            "Description": "Web 2 Subnet",
+            "Value" : {"Ref": "Web2Subnet"},
+            "Export" : {
+                "Name" : {"Ref" : "Web2SubnetName"}
+            }
+        },
+        "UtilSubnetExport":{
+            "Description": "Util Subnet",
+            "Value" : {"Ref": "UtilSubnet"},
+            "Export" : {
+                "Name" : {"Ref" : "Util1SubnetName"}
+            }
+        },
+        "ALBSubnet1Export":{
+            "Description": "ALB Subnet 1",
+            "Value" : {"Ref": "ALBSubnet1"},
+            "Export" : {
+                "Name" : {"Ref" : "ALBSubnet1Name"}
+            }
+        },
+        "ALBSubnet2Export":{
+            "Description": "ALB Subnet 2",
+            "Value" : {"Ref": "ALBSubnet2"},
+            "Export" : {
+                "Name" : {"Ref" : "ALBSubnet2Name"}
+            }
+        }
+    }
+}

@@ -1,0 +1,18 @@
+---
+- name: Create Natgateway with CF Template
+  cloudformation:
+    stack_name: "{{stacks['stack-name']}}"
+    state: present
+    region: "{{stacks['region']}}"
+    disable_rollback: True
+    template: ../templates/subnets-template.json
+    template_parameters:
+      EnvironmentTag: "{{stacks['EnvironmentTag']}}"
+      OwnerTag: "{{stacks['OwnerTag']}}"
+      NatGateway1Name: "{{stacks['NatGateway1Name']}}"
+      NatGateway2Name: "{{stacks['NatGateway2Name']}}"
+    tags:
+      Stack: "{{stacks['stack-name']}}NatGateway"
+  register: natgateway_stack
+- name: Show Stack Outputs
+  debug: msg="Stack outputs should be {{natgateway_stack.stack_outputs}}"

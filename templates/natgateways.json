@@ -1,0 +1,89 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "Nat Gateway Creation",
+    "Parameters":{
+        "EnvironmentTag": {
+            "Description": "Environment",
+            "Type": "String"
+        },
+        "OwnerTag": {
+            "Description": "TagOwner",
+            "Type": "String"
+        },
+        "NatGateway1Name":{
+            "Description" : "NatGateway1 Name Tag",
+            "Type": "String"
+        },
+        "NatGateway2Name":{
+            "Description" : "NatGateway2 Name Tag",
+            "Type": "String"
+        }
+    },
+    "Resources":{
+        "EIP1":{
+            "Type" : "AWS::EC2::EIP"            
+        },
+        "EIP2":{
+            "Type" : "AWS::EC2::EIP"            
+        },
+        "NatGateway1" :{
+            "Type": "AWS::EC2::NatGateway",
+            "Properties" : {
+                "AllocationId" : {"Fn::GetAtt": ["EIP1","AllocationId"]},
+                "SubnetId" : { "Fn::ImportValue" : "Nat-Subnet-AZ-1" },
+                "Tags" : [
+                        {
+                            "Key": "Name",
+                            "Value": {"Ref" : "NatGateway1Name" }
+                        },
+                        {
+                            "Key": "Owner",
+                            "Value": {"Ref": "OwnerTag"}
+                        }, 
+                        {
+                            "Key": "Environment",
+                            "Value": {"Ref": "EnvironmentTag"}
+                        }
+                ]
+            }
+        },
+        "NatGateway2" :{
+            "Type": "AWS::EC2::NatGateway",
+            "Properties" : {
+                "AllocationId" : {"Fn::GetAtt": ["EIP2","AllocationId"]},
+                "SubnetId" : { "Fn::ImportValue" : "Nat-Subnet-AZ-2" },
+                "Tags" : [
+                        {
+                            "Key": "Name",
+                            "Value": {"Ref" : "NatGateway2Name" }
+                        },
+                        {
+                            "Key": "Owner",
+                            "Value": {"Ref": "OwnerTag"}
+                        }, 
+                        {
+                            "Key": "Environment",
+                            "Value": {"Ref": "EnvironmentTag"}
+                        }
+                ]
+            }
+        }
+    },
+    "Outputs":{
+        "NatGateway1Export":{
+            "Description" : "NatGateway1 Id",
+            "Value" : {"Ref" : "NatGateway1"},
+            "Export": {
+                "Name": {"Ref" : "NatGateway1Name"}
+            }
+        },
+        "NatGateway2Export":{
+            "Description" : "NatGateway2 Id",
+            "Value" : {"Ref" : "NatGateway2"},
+            "Export": {
+                "Name": {"Ref" : "NatGateway2Name"}
+            }
+        }
+    
+    }
+}

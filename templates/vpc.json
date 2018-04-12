@@ -1,0 +1,91 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "VPC Creation",
+    "Parameters":{
+        "EnvironmentTag": {
+            "Description": "Environment for the Stack",
+            "Type": "String"
+        },
+        "VPCCidrBlock": {
+            "Description": "CIDR Block for VPC",
+            "Type": "String",
+            "AllowedPattern": "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,2})",
+            "ConstraintDescription": "Must be valid CIDR block Ex: 0.0.0.0/0 ."
+        },
+        "VPCName": {
+            "Description": "Name Tag for the VPC",
+            "Type": "String"
+        },
+        "OwnerTag": {
+            "Description": "Owner Tag for the Resources",
+            "Type": "String"
+        }
+    },
+    "Resources": {
+        "ApplicationVPC": {
+            "Type": "AWS::EC2::VPC",
+            "Properties": {
+                "CidrBlock": {"Ref" : "VPCCidrBlock"},
+                "InstanceTenancy": "default",
+                "EnableDnsSupport": "true",
+                "EnableDnsHostnames": "true",
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": {"Ref": "VPCName"}
+                    }, 
+                    {
+                        "Key": "Owner",
+                        "Value": {"Ref": "OwnerTag"}
+                    }, 
+                    {
+                        "Key": "Environment",
+                        "Value": {"Ref": "EnvironmentTag"}
+                    }
+                ]
+            }
+        },
+        "InternetGateway": {
+            "Type": "AWS::EC2::InternetGateway",
+            "Properties": {
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": {"Fn::Join" : ["_", [{"Ref" : "EnvironmentTag"}, "-IGW"]]}
+                    },
+                    {
+                        "Key": "Owner",
+                        "Value": {"Ref": "OwnerTag"}
+                    }, 
+                    {
+                        "Key": "Environment",
+                        "Value": {"Ref": "EnvironmentTag"}
+                    }
+                ]
+            }
+        },
+        "IGWAttachment": {
+            "Type": "AWS::EC2::VPCGatewayAttachment",
+            "Properties": {
+                "VpcId": {"Ref": "ApplicationVPC"},
+                "InternetGatewayId": {"Ref": "InternetGateway"}
+            }
+        }
+    },
+    "Outputs":{
+        "VPC" : {
+            "Description": "VPC",
+            "Value" : {"Ref": "ApplicationVPC"},
+            "Export" : {
+                "Name" : {"Ref" : "VPCName"}
+            }
+        },
+        "InternetGatewayRef": {
+            "Description" : "Internet Gateway",
+            "Value":  {"Ref": "InternetGateway"},
+            "Export" : {
+                "Name" : "InternetGateway"
+            }
+        }
+    }
+}
