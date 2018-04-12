@@ -12,7 +12,7 @@
       VPCName: "{{vars['stacks']['vpc']['parameters']['VPCName']}}"
       OwnerTag: "{{vars['stacks']['vpc']['parameters']['OwnerTag']}}"
     tags:
-      Name: "{{vars['stacks']['vpc']['VPCName']}}Stack"
+      Name: "{{vars['stacks']['vpc']['parameters']['VPCName']}}Stack"
   register: vpc_stack
 - name: Show Stack Outputs
   debug: msg="Stack outputs should be {{vpc_stack.stack_outputs}}"
