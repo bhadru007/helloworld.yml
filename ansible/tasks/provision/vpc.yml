@@ -14,6 +14,8 @@
     tags:
       Name: "Stack"
   register: vpc_stack
+- name: Dump all vars
+    action: template src=dumpall.j2 dest=/tmp/ansible.all
 - name: Show Stack Outputs
   debug: msg="{{hostvars}}"
   debug: msg="Stack outputs should be {{vpc_stack.stack_outputs}}"
