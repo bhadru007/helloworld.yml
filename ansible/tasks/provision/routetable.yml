@@ -9,7 +9,7 @@
     template_parameters:
       EnvironmentTag: "{{stacks['routetable']['parameters']['EnvironmentTag']}}"
       OwnerTag: "{{stacks['routetable']['parameters']['OwnerTag']}}"
-   tags:
+    tags:
       Stack: "{{stacks['routetable']['stack-name']}}"
   register: routetable_stack
 - name: Show Stack Outputs
