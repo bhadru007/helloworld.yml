@@ -930,7 +930,7 @@
                 ],
                 "DeploymentGroupName": {"Ref": "CodeDeployAppName"},
                 "DeploymentConfigName": "CodeDeployDefault.OneAtATime",
-                "ServiceRoleArn": {"Ref": "CodeDeployServiceRole"}
+                "ServiceRoleArn": {"Fn::GetAtt" : ["CodeDeployServiceRole", "Arn"]}
             }
         }
     },
