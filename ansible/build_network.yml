@@ -4,7 +4,7 @@
   connection: local
   gather_facts: no
   vars_files:
-    - /home/ec2-user/networkcode/config/{{target_env}}/stack-configs.yml
+    - ../config/{{target_env}}/stack-configs.yml
   tasks:
     - include: tasks/provision/vpc.yml
     - include: tasks/provision/subnet.yml
