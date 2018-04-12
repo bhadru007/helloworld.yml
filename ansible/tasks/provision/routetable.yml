@@ -1,16 +1,16 @@
 ---
 - name: Create RouteTables with CF Template
   cloudformation:
-    stack_name: "{{stacks['routetable']['stack-name']}}"
+    stack_name: "{{vars['stacks']['routetable']['stack-name']}}"
     state: present
-    region: "{{stacks['routetable']['region']}}"
+    region: "{{vars['stacks']['routetable']['region']}}"
     disable_rollback: True
     template: ../templates/{{vars['stacks']['routetable']['templatefile']}}
     template_parameters:
-      EnvironmentTag: "{{stacks['routetable']['parameters']['EnvironmentTag']}}"
-      OwnerTag: "{{stacks['routetable']['parameters']['OwnerTag']}}"
+      EnvironmentTag: "{{vars['stacks']['routetable']['parameters']['EnvironmentTag']}}"
+      OwnerTag: "{{vars['stacks']['routetable']['parameters']['OwnerTag']}}"
     tags:
-      Stack: "{{stacks['routetable']['stack-name']}}"
+      Stack: "{{vars['stacks']['routetable']['stack-name']}}"
   register: routetable_stack
 - name: Show Stack Outputs
   debug: msg="Stack outputs should be {{routetable_stack.stack_outputs}}"
