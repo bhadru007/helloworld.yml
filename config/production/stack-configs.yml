@@ -46,3 +46,14 @@ stacks:
     parameters:
       EnvironmentTag: "Production"
       OwnerTag: "jboynton"
+  peerconnection:
+    stack-name: "Peer-Connection"
+    region: "us-east-2"
+    templatefile: "peerconnection.json"
+    parameters:
+      EnvironmentTag: "Production"
+      OwnerTag: "jboynton"
+      InitialVpc: "vpc-6096f008"
+      InitialRouteTable: "rtb-75d73c1c"
+      DestinationCidrBlock: "10.10.0.0/16"
+      ReverseDestinationCidrBlock: "172.31.0.0/16"

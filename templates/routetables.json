@@ -119,6 +119,22 @@
         },
     },
     "Outputs": {
+        "RouteTable1Export" : {
+            "Description" : "Route table 1 export",
+            "Value" : {"Ref" : "Nat1RouteTable"},
+            "Export": {
+                "Name" : "RouteTable1ExportName"
+            }
+        
+        },
+        "RouteTable2Export" : {
+            "Description" : "Route table 2 export",
+            "Value" : {"Ref" : "Nat2RouteTable"},
+            "Export": {
+                "Name" : "RouteTable2ExportName"
+            }
+        
+        }
     
     }
 }

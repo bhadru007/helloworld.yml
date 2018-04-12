@@ -1,0 +1,86 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "Subnet Creation",
+    "Parameters":{
+        "EnvironmentTag": {
+            "Description": "Environment",
+            "Type": "String"
+        },
+        "OwnerTag": {
+            "Description": "TagOwner",
+            "Type": "String"
+        },
+        "InitialVpc" :{
+            "Description" : "VPC requesting PeerConnection",
+            "Type" : "AWS::EC2::VPC::Id"
+        },
+        "InitialRouteTable":{
+            "Description" : "Route table id of initiating VPC",
+            "Type": "AWS::EC2::RouteTable"
+        },
+        "DestinationCidrBlock" : {
+            "Description" : "Cidr Block of destination VPC",
+            "Type": "String",
+            "AllowedPattern": "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,2})",
+            "ConstraintDescription": "Must be valid CIDR block Ex: 0.0.0.0/0 ."
+        },
+        "ReverseDestinationCidrBlock" : {
+            "Description" : "Cidr Block of reverse destination VPC",
+            "Type": "String",
+            "AllowedPattern": "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,2})",
+            "ConstraintDescription": "Must be valid CIDR block Ex: 0.0.0.0/0 ."
+        }
+    },
+    "Resources": {
+        "VPCPeeringConnection": {
+            "Type": "AWS::EC2::VPCPeeringConnection",
+            "Properties": {
+                "VpcId": {"Ref": "InitialVpc"},
+                "PeerVpcId": { "Fn::ImportValue" : "Production-VPC" }
+            }
+        }
+        "PeeringRoute" : {
+            "Type" : "AWS::EC2::Route",
+            "Properties" : {
+                "DestinationCidrBlock": { "Ref" : "DestinationCidrBlock" },
+                "RouteTableId" : { "Ref" : "InitialRouteTable" },
+                "VpcPeeringConnectionId" : { "Ref" : "VPCPeeringConnection" }
+            }
+        },
+        "ReversePeerRoute" : {
+            "Type" : "AWS::EC2::Route",
+            "Properties" : {
+                "DestinationCidrBlock" : {"Ref" : "ReverseDestinationCidrBlock"},
+                "RouteTableId" : { "Fn::ImportValue" : "RouteTable1ExportName" },
+                "VpcPeeringConnectionId" : { "Ref" : "VPCPeeringConnection" }
+            }
+        },
+        "ReversePeerRoute2" : {
+            "Type" : "AWS::EC2::Route",
+            "Properties" : {
+                "DestinationCidrBlock" : {"Ref" : "ReverseDestinationCidrBlock"},
+                "RouteTableId" : { "Fn::ImportValue" : "RouteTable2ExportName" },
+                "VpcPeeringConnectionId" : { "Ref" : "VPCPeeringConnection" }
+            }
+        }
+    },
+    "Outputs" : {
+        "PeerExport":{
+            "Description": "Peer connection export",
+            "Value": {"Ref" : "VPCPeeringConnection"},
+            "Export" : {
+                "Name" : "VPCPeerConnection"
+            }
+        
+        }
+    }
+}
+
+"PeeringRoute2" : {
+            "Type" : "AWS::EC2::Route",
+            "Properties" : {
+                "DestinationCidrBlock": { "Ref" : "myPrivateVPCIDCIDRRange" },
+                "RouteTableId" : { "Ref" : "PublicRouteTable" },
+                "VpcPeeringConnectionId" : { "Ref" : "myVPCPeeringConnection" }
+            }
+        },

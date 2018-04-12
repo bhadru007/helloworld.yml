@@ -1,0 +1,20 @@
+---
+- name: Create PeerConnection with CF Template
+  cloudformation:
+    stack_name: "{{stacks['peerconnection']['stack-name']}}"
+    state: present
+    region: "{{stacks['peerconnection']['region']}}"
+    disable_rollback: True
+    template: ../templates/{{vars['stacks']['peerconnection']['templatefile']}}
+    template_parameters:
+      EnvironmentTag: "{{stacks['peerconnection']['parameters']['EnvironmentTag']}}"
+      OwnerTag: "{{stacks['peerconnection']['parameters']['OwnerTag']}}"
+      InitialVpc: "{{stacks['peerconnection']['parameters']['InitialVpc']}}"
+      InitialRouteTable: "{{stacks['peerconnection']['parameters']['InitialRouteTable']}}"
+      DestinationCidrBlock: "{{stacks['peerconnection']['parameters']['DestinationCidrBlock']}}"
+      ReverseDestinationCidrBlock: "{{stacks['peerconnection']['parameters']['ReverseDestinationCidrBlock']}}"
+    tags:
+      Stack: "{{stacks['routetable']['stack-name']}}"
+  register: peer_stack
+- name: Show Stack Outputs
+  debug: msg="Stack outputs should be {{peer_stack.stack_outputs}}"
