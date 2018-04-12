@@ -13,3 +13,4 @@
     - include: tasks/provision/natgateway.yml
     - include: tasks/provision/routetable.yml
     - include: tasks/provision/peerconnection.yml
+    - include: tasks/provision/helloworld.yml
