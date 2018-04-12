@@ -11,3 +11,4 @@
     - include: tasks/provision/vpc.yml
     - include: tasks/provision/subnet.yml
     - include: tasks/provision/natgateway.yml
+    - include: tasks/provision/routetable.yml

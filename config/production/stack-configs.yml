@@ -39,3 +39,10 @@ stacks:
       OwnerTag: "jboynton"
       NatGateway1Name: "NatGateway1"
       NatGateway2Name: "NatGateway2"
+  routetable:
+    stack-name: "RouteTable"
+    region: "us-east-2"
+    templatefile: "routetables.json"
+    parameters:
+      EnvironmentTag: "Production"
+      OwnerTag: "jboynton"

@@ -1,0 +1,124 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "Subnet Creation",
+    "Parameters":{
+        "EnvironmentTag": {
+            "Description": "Environment",
+            "Type": "String"
+        },
+        "OwnerTag": {
+            "Description": "TagOwner",
+            "Type": "String"
+        }
+    },
+    "Resources" : {
+        "Nat1RouteTable": {
+            "Type": "AWS::EC2::RouteTable",
+            "Properties": {
+                "VpcId": { "Fn::ImportValue" : "Production-VPC" },
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": {"Fn::Join" : ["_", [{"Ref" : "EnvironmentTag"}, "Nat1RouteTable"]]}
+                    }, 
+                    {
+                        "Key": "Owner",
+                        "Value": {"Ref": "OwnerTag"}
+                    }, 
+                    {
+                        "Key": "Environment",
+                        "Value": {"Ref": "EnvironmentTag"}
+                    }
+                ]
+            }
+        },
+        "Nat2RouteTable": {
+            "Type": "AWS::EC2::RouteTable",
+            "Properties": {
+                "VpcId": { "Fn::ImportValue" : "Production-VPC" },
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": {"Fn::Join" : ["_", [{"Ref" : "EnvironmentTag"}, "Nat2RouteTable"]]}
+                    }, 
+                    {
+                        "Key": "Owner",
+                        "Value": {"Ref": "OwnerTag"}
+                    }, 
+                    {
+                        "Key": "Environment",
+                        "Value": {"Ref": "EnvironmentTag"}
+                    }
+                ]
+            }
+        },
+        "DefaultRoute1": {
+            "Type": "AWS::EC2::Route",
+            "Properties": {
+                "DestinationCidrBlock": "0.0.0.0/0",
+                "RouteTableId": {"Ref": "Nat1RouteTable"},
+                "NatGatewayId": { "Fn::ImportValue" : "NatGateway1Export" }
+            }
+        },
+        "DefaultRoute2": {
+            "Type": "AWS::EC2::Route",
+            "Properties": {
+                "DestinationCidrBlock": "0.0.0.0/0",
+                "RouteTableId": {"Ref": "Nat2RouteTable"},
+                "NatGatewayId": { "Fn::ImportValue" : "NatGateway2Export" }
+            }
+        },
+        "RTAssoc1": {
+            "Type": "AWS::EC2::SubnetRouteTableAssociation",
+            "Properties": {
+                "RouteTableId": {"Ref": "Nat1RouteTable"},
+                "SubnetId": { "Fn::ImportValue" : "Nat1SubnetExport" }
+            }
+        },
+        "RTAssoc2": {
+            "Type": "AWS::EC2::SubnetRouteTableAssociation",
+            "Properties": {
+                "RouteTableId": {"Ref": "Nat1RouteTable"},
+                "SubnetId": { "Fn::ImportValue" : "Web1SubnetExport" }
+            }
+        },
+        "RTAssoc3": {
+            "Type": "AWS::EC2::SubnetRouteTableAssociation",
+            "Properties": {
+                "RouteTableId": {"Ref": "Nat1RouteTable"},
+                "SubnetId": { "Fn::ImportValue" : "UtilSubnetExport" }
+            }
+        },
+        "RTAssoc4": {
+            "Type": "AWS::EC2::SubnetRouteTableAssociation",
+            "Properties": {
+                "RouteTableId": {"Ref": "Nat1RouteTable"},
+                "SubnetId": { "Fn::ImportValue" : "ALBSubnet1Export" }
+            }
+        },
+        "RTAssoc5": {
+            "Type": "AWS::EC2::SubnetRouteTableAssociation",
+            "Properties": {
+                "RouteTableId": {"Ref": "Nat2RouteTable"},
+                "SubnetId": { "Fn::ImportValue" : "Web2SubnetExport" }
+            }
+        },
+        "RTAssoc6": {
+            "Type": "AWS::EC2::SubnetRouteTableAssociation",
+            "Properties": {
+                "RouteTableId": {"Ref": "Nat2RouteTable"},
+                "SubnetId": { "Fn::ImportValue" : "Nat2SubnetExport" }
+            }
+        },
+        "RTAssoc7": {
+            "Type": "AWS::EC2::SubnetRouteTableAssociation",
+            "Properties": {
+                "RouteTableId": {"Ref": "Nat2RouteTable"},
+                "SubnetId": { "Fn::ImportValue" : "ALBSubnet2Export" }
+            }
+        },
+    },
+    "Outputs": {
+    
+    }
+}
