@@ -7,10 +7,10 @@
     disable_rollback: True
     template: ../templates/subnets-template.json
     template_parameters:
-      EnvironmentTag: "{{stacks['natgateway']['EnvironmentTag']}}"
-      OwnerTag: "{{stacks['natgateway']['OwnerTag']}}"
-      NatGateway1Name: "{{stacks['natgateway']['NatGateway1Name']}}"
-      NatGateway2Name: "{{stacks['natgateway']['NatGateway2Name']}}"
+      EnvironmentTag: "{{stacks['natgateway']['parameters']['EnvironmentTag']}}"
+      OwnerTag: "{{stacks['natgateway']['parameters']['OwnerTag']}}"
+      NatGateway1Name: "{{stacks['natgateway']['parameters']['NatGateway1Name']}}"
+      NatGateway2Name: "{{stacks['natgateway']['parameters']['NatGateway2Name']}}"
     tags:
       Stack: "{{stacks['natgateway']['stack-name']}}NatGateway"
   register: natgateway_stack
