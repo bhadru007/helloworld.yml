@@ -3,7 +3,7 @@
   cloudformation:
     stack_name: "{{stacks['vpc']['stack-name']}}"
     state: present
-    region: "{{stacks['region']}}"
+    region: "{{stacks['vpc']['region']}}"
     disable_rollback: True
     template: ../templates/vpc.json
     template_parameters:
