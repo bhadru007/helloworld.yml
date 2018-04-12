@@ -1,30 +1,30 @@
 ---
 - name: Create Subnets with CF Template
   cloudformation:
-    stack_name: "{{stacks['stack-name']}}"
+    stack_name: "{{stacks['subnets']['stack-name']}}"
     state: present
-    region: "{{stacks['region']}}"
+    region: "{{stacks['subnets']['region']}}"
     disable_rollback: True
     template: ../templates/subnets-template.json
     template_parameters:
-      EnvironmentTag: "{{stacks['EnvironmentTag']}}"
-      OwnerTag: "{{stacks['OwnerTag']}}"
-      Nat1SubnetName: "{{stacks['Nat1SubnetName']}}"
-      Nat1SubnetCidrBlock: "{{stacks['Nat1SubnetCidrBlock']}}"
-      Nat2SubnetName: "{{stacks['Nat2SubnetName']}}"
-      Nat2SubnetCidrBlock: "{{stacks['Nat2SubnetCidrBlock']}}"
-      Web1SubnetName: "{{stacks['Web1SubnetName']}}"
-      Web1SubnetCidrBlock: "{{stacks['Web1SubnetCidrBlock']}}"
-      Web2SubnetName: "{{stacks['Web2SubnetName']}}"
-      Web2SubnetCidrBlock: "{{stacks['Web2SubnetCidrBlock']}}"
-      Util1SubnetName: "{{stacks['Util1SubnetName']}}"
-      Util1SubnetCidrBlock: "{{stacks['Util1SubnetCidrBlock']}}"
-      ALBSubnet1Name: "{{stacks['ALBSubnet1Name']}}"
-      ALBSubnet1CidrBlock: "{{stacks['ALBSubnet1CidrBlock']}}"
-      ALBSubnet2Name: "{{stacks['ALBSubnet2Name']}}"
-      ALBSubnet2CidrBlock: "{{stacks['ALBSubnet2CidrBlock']}}"
+      EnvironmentTag: "{{stacks['subnets']['EnvironmentTag']}}"
+      OwnerTag: "{{stacks['subnets']['OwnerTag']}}"
+      Nat1SubnetName: "{{stacks['subnets']['Nat1SubnetName']}}"
+      Nat1SubnetCidrBlock: "{{stacks['subnets']['Nat1SubnetCidrBlock']}}"
+      Nat2SubnetName: "{{stacks['subnets']['Nat2SubnetName']}}"
+      Nat2SubnetCidrBlock: "{{stacks['subnets']['Nat2SubnetCidrBlock']}}"
+      Web1SubnetName: "{{stacks['subnets']['Web1SubnetName']}}"
+      Web1SubnetCidrBlock: "{{stacks['subnets']['Web1SubnetCidrBlock']}}"
+      Web2SubnetName: "{{stacks['subnets']['Web2SubnetName']}}"
+      Web2SubnetCidrBlock: "{{stacks['subnets']['Web2SubnetCidrBlock']}}"
+      Util1SubnetName: "{{stacks['subnets']['Util1SubnetName']}}"
+      Util1SubnetCidrBlock: "{{stacks['subnets']['Util1SubnetCidrBlock']}}"
+      ALBSubnet1Name: "{{stacks['subnets']['ALBSubnet1Name']}}"
+      ALBSubnet1CidrBlock: "{{stacks['subnets']['ALBSubnet1CidrBlock']}}"
+      ALBSubnet2Name: "{{stacks['subnets']['ALBSubnet2Name']}}"
+      ALBSubnet2CidrBlock: "{{stacks['subnets']['ALBSubnet2CidrBlock']}}"
     tags:
-      Stack: "{{stacks['stack-name']}}Subnets"
+      Stack: "{{stacks['subnets']['stack-name']}}Subnets"
   register: subnet_stack
 - name: Show Stack Outputs
   debug: msg="Stack outputs should be {{subnet_stack.stack_outputs}}"
