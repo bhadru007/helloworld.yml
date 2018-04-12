@@ -18,9 +18,9 @@ echo ""
 echo ""
 echo ""
 eval `ssh-agent -s`
-ssh-add $keylocation
+ssh-add $keylocation 
 
-
+echo "SSH with the command below."
 echo "ssh ec2-user@$ipaddress"
 
 

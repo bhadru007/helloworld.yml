@@ -163,10 +163,10 @@
                     "easy_install pip",
                     "pip install ansible",
                     "pip install --upgrade pip",
-                    "git init --bare /home/ec2-user/helloworld",
-                    "git init --bare /home/ec2-user/networkcode",
-                    "chown -R ec2-user:ec2-user /home/helloworld",
-                    "chown -R ec2-user:ec2-user /home/networkcode"
+                    "git clone https://github.com/warpedcodemonkey/networkcode.git /home/ec2-user/networkcode",
+                    "git clone https://github.com/warpedcodemonkey/helloworld.git /home/ec2-user/helloworld",
+                    "chown -R ec2-user:ec2-user /home/ec2-user/helloworld",
+                    "chown -R ec2-user:ec2-user /home/ec2-user/networkcode"
                 ]]}}
             }
         }
