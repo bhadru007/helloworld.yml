@@ -6,6 +6,9 @@
   vars_files:
     - ../config/{{target_env}}/stack-configs.yml
   tasks:
+    - name: Dump all vars
+      action: template src=dumpall.j2 dest=/tmp/ansible.all
     - include: tasks/provision/vpc.yml
-    - include: tasks/provision/subnet.yml
-    - include: tasks/provision/natgateway.yml
+    
+#    - include: tasks/provision/subnet.yml
+#    - include: tasks/provision/natgateway.yml
