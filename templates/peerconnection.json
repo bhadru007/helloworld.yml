@@ -16,7 +16,7 @@
         },
         "InitialRouteTable":{
             "Description" : "Route table id of initiating VPC",
-            "Type": "AWS::EC2::RouteTable"
+            "Type": "String"
         },
         "DestinationCidrBlock" : {
             "Description" : "Cidr Block of destination VPC",
