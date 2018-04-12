@@ -28,7 +28,7 @@ stacks:
       Util1SubnetCidrBlock: 10.10.30.0/24
       ALBSubnet1Name: "ALB-Subnet-AZ-1"
       ALBSubnet1CidrBlock: 10.10.10.0/24
-      ALBSubnet2Name: "Web-Subnet-AZ-2"
+      ALBSubnet2Name: "ALB-Subnet-AZ-2"
       ALBSubnet2CidrBlock: 10.10.11.0/24
   natgateway:
     stack-name: "Nat-Gateway"
