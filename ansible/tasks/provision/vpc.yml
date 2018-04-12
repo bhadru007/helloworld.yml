@@ -15,6 +15,5 @@
       Name: "Stack"
   register: vpc_stack
 - name: Show Stack Outputs
-  debug: msg="{{hostvars}}"
   debug: msg="Stack outputs should be {{vpc_stack.stack_outputs}}"
   debug: msg="This should be the value of the ID {{vpc_stack.stack_outputs['VPC']}}"

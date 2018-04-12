@@ -7,7 +7,7 @@
     - ../config/{{target_env}}/stack-configs.yml
   tasks:
     - name: Dump all vars
-      action: template src=dumpall.j2 dest=/tmp/ansible.all
+      debug: msg="{{environment}}"
     - include: tasks/provision/vpc.yml
     
 #    - include: tasks/provision/subnet.yml
