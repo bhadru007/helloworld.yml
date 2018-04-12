@@ -9,5 +9,5 @@
     - name: Dump all vars
       debug: msg="{{vars}}"
     - include: tasks/provision/vpc.yml
-#    - include: tasks/provision/subnet.yml
-#    - include: tasks/provision/natgateway.yml
+    - include: tasks/provision/subnet.yml
+    - include: tasks/provision/natgateway.yml
