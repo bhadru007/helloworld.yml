@@ -642,6 +642,27 @@
                 ]
             }
         },
+        "CodeDeployPolicy": {
+            "Type" : "AWS::IAM::ManagedPolicy",
+            "Properties": {
+                "Description" : "CodeDeployPolicy",
+                "PolicyDocument" : {
+                "Version" : "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Action": [
+                                "autoscaling:*"
+                            ],
+                            "Resource": [
+                                "arn:aws:autoscaling:*:*:*"
+                            ]
+                        }
+                    ]
+                },
+                "Roles" : [{"Ref" : "CodeDeployServiceRole"}]
+            }
+        },
         "InstanceProfile": {
             "Type": "AWS::IAM::InstanceProfile",
             "Properties": {
