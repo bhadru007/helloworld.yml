@@ -999,6 +999,13 @@
         }
     },
     "Outputs": {
+        "DNSOutput" : {
+            "Description" : "Final url for hello world app.",
+            "Value" : {"Fn::GetAtt" : ["ALB", "DNSName"]},
+            "Export" : {
+                "Name" : "FinalURL"
+            }
+        }
 
     }
 }
