@@ -16,6 +16,5 @@ aws deploy push --application-name $2 --description "A deployment" --ignore-hidd
 
 aws deploy create-deployment --application-name $2 --s3-location bucket=$1,key=deploy-bundle.zip,bundleType=zip --deployment-group-name $3 --deployment-config-name CodeDeployDefault.OneAtATime --description "My Deployment"
 
-cd ~
 
 rm -fr $MY_PATH/buildDir
