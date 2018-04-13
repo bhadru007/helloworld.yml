@@ -4,5 +4,4 @@
   hosts: /tmp/hosts
   become: yes
   become_user: root
-  local_action: aws ec2 describe-instances --filters "Name=tag:Name,Values=HelloWorld-App" | jq '.Reservations[].Instances[].PrivateIpAddress' > /tmp/
-  script: "../../helloworld/scripts/install_dependencies.sh"
+  local_action: "../bash/helloworld_deploy.sh"

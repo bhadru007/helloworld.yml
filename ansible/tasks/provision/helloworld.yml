@@ -24,5 +24,3 @@
   register: helloworld_stack
 - name: Show Stack Outputs
   debug: msg="Stack outputs should be {{helloworld_stack.stack_outputs}}"
-- name: Create host file
-  local_action: aws ec2 describe-instances --filters "Name=tag:Name,Values=HelloWorld-App" | jq '.Reservations[].Instances[].PrivateIpAddress' | sed 's/"//g' > /tmp/hosts

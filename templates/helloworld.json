@@ -779,6 +779,12 @@
                 "SecurityGroups" : [{"Ref": "ApplicationSG"}],
                 "UserData" : { "Fn::Base64" : { "Fn::Join": ["\n",[
                     "#!/bin/bash",
+                    "yum update",
+                    "yum install ruby",
+                    "yum install wget",
+                    "wget https://aws-codedeploy-us-east-2.s3.amazonaws.com/latest/install",
+                    "chmod +x ./install",
+                    "./install auto",
                     "echo 'opening firewall ports ...........'",
                     "iptables -I INPUT -p tcp --dport 5000 -m state --state NEW,ESTABLISHED -j ACCEPT -m comment --comment 'Allow access to application'",
                     "service iptables save",
