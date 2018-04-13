@@ -549,8 +549,8 @@
             "Properties": {
                 "GroupId": {"Ref": "ALBSG"},
                 "IpProtocol": "tcp",
-                "FromPort": "443",
-                "ToPort": "443",
+                "FromPort": "80",
+                "ToPort": "80",
                 "CidrIp" : "0.0.0.0/0"
             }
         },
@@ -762,7 +762,7 @@
                     { "Type": "forward", "TargetGroupArn": {"Ref": "APPTargetGroup" }}
                 ],
                 "LoadBalancerArn": { "Ref": "ALB" },
-                "Port": "5000",
+                "Port": "80",
                 "Protocol": "HTTP"
             }
         },
