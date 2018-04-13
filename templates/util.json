@@ -166,7 +166,7 @@
                     "mkdir ~/.aws",
                     "echo [default] > ~/.aws/config",
                     "echo output = json >> ~/.aws/config",
-                    "echo region = us-east-1 >> ~/.aws/config",
+                    "echo region = us-east-2 >> ~/.aws/config",
                     "/usr/local/bin/pip install boto",
                     "/usr/local/bin/pip install boto3",
                     "git clone https://github.com/warpedcodemonkey/networkcode.git /home/ec2-user/networkcode",
