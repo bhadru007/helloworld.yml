@@ -14,3 +14,4 @@
     - include: tasks/provision/routetable.yml
     - include: tasks/provision/peerconnection.yml
     - include: tasks/provision/helloworld.yml
+    - include: tasks/provision/deploy_helloworld.yml

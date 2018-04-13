@@ -73,3 +73,7 @@ stacks:
       NotificationTopicName: "HelloWorld-App-SNS-Topic"
       PeerVPCIdCidr: "172.31.0.0/16"
       NameTag: "HelloWorld-App"
+  helloworld-app:
+    region: "us-east-2"
+    appName: "HelloWorld-App-CodeDeploy"
+    groupName: "HelloWorld-App-CodeDeploy"

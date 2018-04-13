@@ -1,0 +1,6 @@
+---
+
+- name: Deploy Helloworld
+  become: yes
+  become_user: root
+  script: "../python/deploy_code.py --region {{vars['stacks']['helloworld-app']['region']}} --appName {{vars['stacks']['helloworld-app']['appName']}} --groupName {{vars['stacks']['helloworld-app']['groupName']}}"
