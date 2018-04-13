@@ -52,7 +52,47 @@
                 ]
             }
         },
-        "DefaultRoute1": {
+        "Web1RouteTable": {
+            "Type": "AWS::EC2::RouteTable",
+            "Properties": {
+                "VpcId": { "Fn::ImportValue" : "Production-VPC" },
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": {"Fn::Join" : ["_", [{"Ref" : "EnvironmentTag"}, "Web1RouteTable"]]}
+                    }, 
+                    {
+                        "Key": "Owner",
+                        "Value": {"Ref": "OwnerTag"}
+                    }, 
+                    {
+                        "Key": "Environment",
+                        "Value": {"Ref": "EnvironmentTag"}
+                    }
+                ]
+            }
+        },
+        "Web2RouteTable": {
+            "Type": "AWS::EC2::RouteTable",
+            "Properties": {
+                "VpcId": { "Fn::ImportValue" : "Production-VPC" },
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": {"Fn::Join" : ["_", [{"Ref" : "EnvironmentTag"}, "Web2RouteTable"]]}
+                    }, 
+                    {
+                        "Key": "Owner",
+                        "Value": {"Ref": "OwnerTag"}
+                    }, 
+                    {
+                        "Key": "Environment",
+                        "Value": {"Ref": "EnvironmentTag"}
+                    }
+                ]
+            }
+        },
+        "NatRoute1": {
             "Type": "AWS::EC2::Route",
             "Properties": {
                 "DestinationCidrBlock": "0.0.0.0/0",
@@ -60,12 +100,28 @@
                 "GatewayId": { "Fn::ImportValue" : "InternetGateway" }
             }
         },
-        "DefaultRoute2": {
+        "NatRoute2": {
             "Type": "AWS::EC2::Route",
             "Properties": {
                 "DestinationCidrBlock": "0.0.0.0/0",
                 "RouteTableId": {"Ref": "Nat2RouteTable"},
                 "GatewayId": { "Fn::ImportValue" : "InternetGateway" }
+            }
+        },
+        "WebRoute1" : {
+            "Type" : "AWS::EC2::Route",
+            "Properties": {
+                "DestinationCidrBlock": "0.0.0.0/0",
+                "RouteTableId": {"Ref": "Web1RouteTable"},
+                "NatGatewayId": { "Fn::ImportValue" : "NatGateway1" }
+            }
+        },
+        "WebRoute2" : {
+            "Type" : "AWS::EC2::Route",
+            "Properties": {
+                "DestinationCidrBlock": "0.0.0.0/0",
+                "RouteTableId": {"Ref": "Web2RouteTable"},
+                "NatGatewayId": { "Fn::ImportValue" : "NatGateway2" }
             }
         },
         "RTAssoc1": {
@@ -78,28 +134,28 @@
         "RTAssoc2": {
             "Type": "AWS::EC2::SubnetRouteTableAssociation",
             "Properties": {
-                "RouteTableId": {"Ref": "Nat1RouteTable"},
+                "RouteTableId": {"Ref": "Web1RouteTable"},
                 "SubnetId": { "Fn::ImportValue" : "Web-Subnet-AZ-1" }
             }
         },
         "RTAssoc3": {
             "Type": "AWS::EC2::SubnetRouteTableAssociation",
             "Properties": {
-                "RouteTableId": {"Ref": "Nat1RouteTable"},
+                "RouteTableId": {"Ref": "Web1RouteTable"},
                 "SubnetId": { "Fn::ImportValue" : "Util-Subnet-AZ-1" }
             }
         },
         "RTAssoc4": {
             "Type": "AWS::EC2::SubnetRouteTableAssociation",
             "Properties": {
-                "RouteTableId": {"Ref": "Nat1RouteTable"},
+                "RouteTableId": {"Ref": "Web1RouteTable"},
                 "SubnetId": { "Fn::ImportValue" : "ALB-Subnet-AZ-1" }
             }
         },
         "RTAssoc5": {
             "Type": "AWS::EC2::SubnetRouteTableAssociation",
             "Properties": {
-                "RouteTableId": {"Ref": "Nat2RouteTable"},
+                "RouteTableId": {"Ref": "Web2RouteTable"},
                 "SubnetId": { "Fn::ImportValue" : "Web-Subnet-AZ-2" }
             }
         },
@@ -113,7 +169,7 @@
         "RTAssoc7": {
             "Type": "AWS::EC2::SubnetRouteTableAssociation",
             "Properties": {
-                "RouteTableId": {"Ref": "Nat2RouteTable"},
+                "RouteTableId": {"Ref": "Web2RouteTable"},
                 "SubnetId": { "Fn::ImportValue" : "ALB-Subnet-AZ-2" }
             }
         },
