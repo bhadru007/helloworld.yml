@@ -6,3 +6,5 @@
   become_user: root
   command: "/home/ec2-user/networkcode/bash/helloworld_deploy.sh {{vars['stacks']['helloworld']['parameters']['CodeDeployS3Bucket']}} {{vars['stacks']['helloworld-app']['appName']}} {{vars['stacks']['helloworld-app']['groupName']}}" 
   delegate_to: 127.0.0.1
+- name: Results
+  debug: msg="Once code deploy is complete, navigate to http://{{helloworld_stack.stack_outputs['DNSOutput']}}"
