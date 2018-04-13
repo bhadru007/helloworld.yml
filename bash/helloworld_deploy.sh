@@ -2,7 +2,7 @@
 
 MY_PATH="`dirname \"$0\"`"
 
-
+rm -fr ./buildDir
 
 mkdir ./buildDir -p
 
