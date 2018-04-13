@@ -62,6 +62,22 @@
                 "RouteTableId" : { "Fn::ImportValue" : "RouteTable2ExportName" },
                 "VpcPeeringConnectionId" : { "Ref" : "VPCPeeringConnection" }
             }
+        },
+        "ReversePeerRoute3" : {
+            "Type" : "AWS::EC2::Route",
+            "Properties" : {
+                "DestinationCidrBlock" : {"Ref" : "ReverseDestinationCidrBlock"},
+                "RouteTableId" : { "Fn::ImportValue" : "WebRouteTable1ExportName" },
+                "VpcPeeringConnectionId" : { "Ref" : "VPCPeeringConnection" }
+            }
+        },
+        "ReversePeerRoute4" : {
+            "Type" : "AWS::EC2::Route",
+            "Properties" : {
+                "DestinationCidrBlock" : {"Ref" : "ReverseDestinationCidrBlock"},
+                "RouteTableId" : { "Fn::ImportValue" : "WebRouteTable2ExportName" },
+                "VpcPeeringConnectionId" : { "Ref" : "VPCPeeringConnection" }
+            }
         }
     },
     "Outputs" : {

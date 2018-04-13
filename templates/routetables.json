@@ -190,6 +190,22 @@
                 "Name" : "RouteTable2ExportName"
             }
         
+        },
+        "WebRouteTable1Export" : {
+            "Description" : "Route table 1 export",
+            "Value" : {"Ref" : "Web1RouteTable"},
+            "Export": {
+                "Name" : "WebRouteTable1ExportName"
+            }
+        
+        },
+        "WebRouteTable2Export" : {
+            "Description" : "Route table 2 export",
+            "Value" : {"Ref" : "Web2RouteTable"},
+            "Export": {
+                "Name" : "WebRouteTable2ExportName"
+            }
+        
         }
     
     }
