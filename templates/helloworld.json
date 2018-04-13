@@ -833,7 +833,7 @@
                     { "Key" : "Name", "Value" : { "Ref": "NameTag"}, "PropagateAtLaunch": true}
                 ],
                 "TerminationPolicies" : [ "OldestLaunchConfiguration", "Default" ],
-                "VPCZoneIdentifier" : [{ "Fn::ImportValue" : "ALB-Subnet-AZ-1"},{ "Fn::ImportValue" : "ALB-Subnet-AZ-2"}]
+                "VPCZoneIdentifier" : [{ "Fn::ImportValue" : "Web-Subnet-AZ-1"},{ "Fn::ImportValue" : "Web-Subnet-AZ-2"}]
             }
         },
         "ScaleUpPolicy" : {

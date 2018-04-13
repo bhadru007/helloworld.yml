@@ -13,9 +13,16 @@ args = parser.parse_args()
 
 client = boto3.client('codedeploy', region_name=args.region)
 
-config = {applicationName=args.appName,deploymentGroupName=args.groupName,
-    revision={revisionType: 'GitHub', gitHubLocation: {repository: 'https://github.com/warpedcodemonkey/helloworld.git'}},ignoreApplicationStopFailures=False}
 
-deploymentResponse = client.create_deployment(config)
+
+deploymentResponse = client.create_deployment(applicationName = args.appName,
+          deploymentGroupName = args.groupName,
+          revision={
+            'revisionType': 'GitHub', 
+            'gitHubLocation': {
+                'repository': 'https://github.com/warpedcodemonkey/helloworld.git'
+            }
+          },
+          ignoreApplicationStopFailures=False)
 
 print(deploymentResponse)
