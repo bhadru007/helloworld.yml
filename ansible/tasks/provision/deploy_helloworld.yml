@@ -1,7 +1,7 @@
 ---
 
 - name: Deploy Helloworld
-  hosts: /tmp/hosts
+  hosts: localhost
   become: yes
   become_user: root
   local_action: "/home/ec2-user/networkcode/bash/helloworld_deploy.sh {{vars['stacks']['helloworld']['parameters']['CodeDeployS3Bucket']}} {{vars['stacks']['helloworld-app']['appName']}} {{vars['stacks']['helloworld-app']['groupName']}}" 
