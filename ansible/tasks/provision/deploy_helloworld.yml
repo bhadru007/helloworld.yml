@@ -4,4 +4,4 @@
   hosts: /tmp/hosts
   become: yes
   become_user: root
-  local_action: command "../bash/helloworld_deploy.sh {{vars['stacks']['helloworld']['parameters']['CodeDeployS3Bucket']}} {{vars['stacks']['helloworld-app']['appName']}} {{vars['stacks']['helloworld-app']['groupName']}}" 
+  local_action: command "/home/ec2-user/network/bash/helloworld_deploy.sh {{vars['stacks']['helloworld']['parameters']['CodeDeployS3Bucket']}} {{vars['stacks']['helloworld-app']['appName']}} {{vars['stacks']['helloworld-app']['groupName']}}" 
