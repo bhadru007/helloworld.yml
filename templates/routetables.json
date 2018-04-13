@@ -1,6 +1,6 @@
 {
     "AWSTemplateFormatVersion": "2010-09-09",
-    "Description": "Subnet Creation",
+    "Description": "Route Table Creation",
     "Parameters":{
         "EnvironmentTag": {
             "Description": "Environment",
