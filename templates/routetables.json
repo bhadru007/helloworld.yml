@@ -148,7 +148,7 @@
         "RTAssoc4": {
             "Type": "AWS::EC2::SubnetRouteTableAssociation",
             "Properties": {
-                "RouteTableId": {"Ref": "Web1RouteTable"},
+                "RouteTableId": {"Ref": "Nat1RouteTable"},
                 "SubnetId": { "Fn::ImportValue" : "ALB-Subnet-AZ-1" }
             }
         },
@@ -169,7 +169,7 @@
         "RTAssoc7": {
             "Type": "AWS::EC2::SubnetRouteTableAssociation",
             "Properties": {
-                "RouteTableId": {"Ref": "Web2RouteTable"},
+                "RouteTableId": {"Ref": "Nat2RouteTable"},
                 "SubnetId": { "Fn::ImportValue" : "ALB-Subnet-AZ-2" }
             }
         },
