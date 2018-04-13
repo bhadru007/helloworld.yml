@@ -4,4 +4,5 @@
   hosts: localhost
   become: yes
   become_user: root
-  local_action: "/home/ec2-user/networkcode/bash/helloworld_deploy.sh {{vars['stacks']['helloworld']['parameters']['CodeDeployS3Bucket']}} {{vars['stacks']['helloworld-app']['appName']}} {{vars['stacks']['helloworld-app']['groupName']}}" 
+  command: "/home/ec2-user/networkcode/bash/helloworld_deploy.sh {{vars['stacks']['helloworld']['parameters']['CodeDeployS3Bucket']}} {{vars['stacks']['helloworld-app']['appName']}} {{vars['stacks']['helloworld-app']['groupName']}}" 
+  delegate_to: 127.0.0.1
