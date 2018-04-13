@@ -1,6 +1,8 @@
 ---
 
 - name: Deploy Helloworld
+  hosts: /tmp/hosts
   become: yes
   become_user: root
-  script: "../python/deploy_code.py --region {{vars['stacks']['helloworld-app']['region']}} --appName {{vars['stacks']['helloworld-app']['appName']}} --groupName {{vars['stacks']['helloworld-app']['groupName']}}"
+  local_action: aws ec2 describe-instances --filters "Name=tag:Name,Values=HelloWorld-App" | jq '.Reservations[].Instances[].PrivateIpAddress' > /tmp/
+  script: "../../helloworld/scripts/install_dependencies.sh"
