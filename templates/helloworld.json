@@ -785,6 +785,7 @@
                     "wget https://aws-codedeploy-us-east-2.s3.amazonaws.com/latest/install",
                     "chmod +x ./install",
                     "./install auto",
+                    "mkdir /tmp/codedeploy-deployment",
                     "echo 'opening firewall ports ...........'",
                     "iptables -I INPUT -p tcp --dport 5000 -m state --state NEW,ESTABLISHED -j ACCEPT -m comment --comment 'Allow access to application'",
                     "service iptables save",
